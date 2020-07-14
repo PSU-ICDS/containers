@@ -1,0 +1,24 @@
+BootStrap: docker
+From: ubuntu:16.04
+
+%labels
+    Author: Jason C. Nucciarone
+    Maintainer: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: v3.0
+
+%post
+    apt-get update -y
+    apt-get install libcanberra-gtk-module libcanberra-gtk3-module -y
+    apt-get install mpb meep -y
+    apt-get install guile-2.0 guile-2.0-dev -y
+    apt-get install octave liboctave-dev -y
+    apt-get install python libpython-dev python-pip -y && \
+    apt-get install libnlopt-dev libnlopt-guile0 libnlopt0 \
+        octave-nlopt python-nlopt -y
+
+%help
+    If you run into any issues regarding
+    the use of this of this container
+    then please contact the ICDS-iASK
+    center at iask@ics.psu.edu
