@@ -84,6 +84,7 @@ $ less ${USER}_info/${USER}_bashrc.txt
 ```
 
 All the files will be named after the user so you know who you're looking at. Now go find what's wrong!
+
 #
 ### gathero
 Gathering is for those who want information, and that's exactly what gathero does! Too often are we as techs left wondering, "Why won't this job start? Why was this job suspended?" First we run checkjob. Then maybe we use account_quota_check or mam-list-accounts. Well now we no longer have to do this. Gathero does this for us! Simply get the job id from the user and use the following commands:
@@ -118,6 +119,7 @@ $ relink_work_scratch
 ```
 
 This will rebuild the symlinks `work` and `scratch`, plus create the directories `not_real_work` within ` work` and `not_real_scratch` within `scratch`. Really want to hammer home that `work` and `scratch` are actually symlinks.
+
 #
 ### setup_comsol_symlink
 User's like to use comsol. Comsol likes to write out to its cache in the home directory. What do you get? "Error: Disk Quota Exceeded." Generally, I would have users either delete the cache or create a symlink, but I found that users will mess it up quite often. Therefore, I wrote this shell script. Have the user use the following commands to create their symlink:
