@@ -26,6 +26,12 @@ if [ -f ${HOME}/.bash_profile ]; then
     cat .bash_profile > ${TEMP}/${USER}_bash_profile.txt
 fi
 
+# Collect .bash_logout
+if [ -f ${HOME}/.bash_logout ]; then
+    echo "Collecting .bash_logout file"
+    cat .bash_logout > ${TEMP}/${USER}_bash_logout.txt
+fi
+
 # Collect .bash_aliases
 if [ -f ${HOME}/.bash_aliases ]; then
     echo "Collecting .bash_aliases file"
@@ -34,19 +40,53 @@ fi
 
 # Gather directory size
 echo "Collecting info on home directory"
-echo "check_aci_storage_quota" >> ${TEMP}/dir_size.txt
-check_aci_storage_quota >> ${TEMP}/dir_size.txt
-echo -e "\n"
-echo "ls -lha" >> ${TEMP}/dir_size.txt
-ls -lha >> ${TEMP}/dir_size.txt
-echo -e "\n" >> ${TEMP}/dir_size.txt
-echo "du -h --max-depth=1" >> ${TEMP}/dir_size.txt
-du -h --max-depth=1 >> ${TEMP}/dir_size.txt
+echo "check_aci_storage_quota" >> ${TEMP}/${USER}_dir_size.txt
+check_aci_storage_quota >> ${TEMP}/${USER}_dir_size.txt
+echo -e "\n" >> ${TEMP}/${USER}_dir_size.txt
+echo "ls -lha" >> ${TEMP}/${USER}_dir_size.txt
+echo -e "\n" >> ${TEMP}/${USER}_dir_size.txt
+ls -lha >> ${TEMP}/${USER}_dir_size.txt
+echo -e "\n" >> ${TEMP}/${USER}_dir_size.txt
+echo "du -h --max-depth=1" >> ${TEMP}/${USER}_dir_size.txt
+du -h --max-depth=1 >> ${TEMP}/${USER}_dir_size.txt
+
+# Combine them all together for kids in a hurry
+if [ -f ${TEMP}/${USER}_bashrc.txt ]; then
+    echo -e ".bashrc\n" >> ${TEMP}/${USER}_all_info.txt
+    cat ${TEMP}/${USER}_bashrc.txt >> ${TEMP}/${USER}_all_info.txt
+fi
+
+if [ -f ${TEMP}/${USER}_bash_history.txt ]; then
+    echo -e "\n.bash_history\n" >> ${TEMP}/${USER}_all_info.txt
+    cat ${TEMP}/${USER}_bash_history.txt >> ${TEMP}/${USER}_all_info.txt
+fi
+
+if [ -f ${TEMP}/${USER}_bash_profile.txt ]; then
+    echo -e "\n.bash_profile\n" >> ${TEMP}/${USER}_all_info.txt
+    cat ${TEMP}/${USER}_bash_profile.txt >> ${TEMP}/${USER}_all_info.txt
+fi
+
+if [ -f ${TEMP}/${USER}_bash_logout.txt ]; then
+    echo -e "\n.bash_logout\n" >> ${TEMP}/${USER}_all_info.txt
+    cat ${TEMP}/${USER}_bash_logout.txt >> ${TEMP}/${USER}_all_info.txt
+fi
+
+if [ -f ${TEMP}/${USER}_bash_aliases.txt ]; then
+    echo -e "\n.bash_aliases\n" >> ${TEMP}/${USER}_all_info.txt
+    cat ${TEMP}/${USER}_bash_aliases.txt >> ${TEMP}/${USER}_all_info.txt
+fi
+
+if [ -f ${TEMP}/${USER}_dir_size.txt ]; then
+    echo -e "\ndir_size\n" >> ${TEMP}/${USER}_all_info.txt
+    cat ${TEMP}/${USER}_dir_size.txt >> ${TEMP}/${USER}_all_info.txt
+fi
 
 # Create tar archive from ${TEMP}
-tar -czvf ${TEMP}.tar.gz ${TEMP}
+echo "Creating tar archive"
+tar -czf ${TEMP}.tar.gz ${TEMP}
 
 # Clean up
+echo "Cleaning up!"
 rm -rf ${TEMP}
 
 echo -e "\nPlease go to Files > Home Directory from"

@@ -3,6 +3,7 @@
 * [What is here](#what-is-here)
 * [How-to-Use](#how-to-use)
 * [Troubleshooting](#troubleshooting)
+* [License](#license)
 
 # Introduction
 
@@ -16,8 +17,9 @@ various shell scripts, singularity images, etc.
 * [Singularity Definition Files](#singularity-definition-files)
 
 ## Scripts
-A collection of shell scripts that I use to help users. Most are written for bash, but I will look into supporting users that prefer to use non-bash shells such as tcsh. For detailed use of each script please refer to the [how-to-use](#how-to-use) section of the documentation. The list of available scripts is as follows:
+A collection of shell scripts that I use to help users. Most are written for bash, but I will look into supporting users that prefer to use non-bash shells such as tcsh. Scripts are stored in `/scripts`, and the executables are stored in `/scripts/bin`. For detailed use of each script please refer to the [how-to-use](#how-to-use) section of the documentation. The list of available scripts is as follows:
 ### Bash
+
 * collecter
 * gathero
 * relink_work_scratch
@@ -25,12 +27,14 @@ A collection of shell scripts that I use to help users. Most are written for bas
 * setup_conda_symlink
 
 ## Modules
-A collection of modules that I have created for users. Written in lua for use with [Lmod](https://lmod.readthedocs.io/en/latest/). Please note that these have been configured for the specific situation of the user (i.e. don't drag and drop module files). The list of available modules is as follows:
+A collection of modules that I have created for users. Written in lua for use with [Lmod](https://lmod.readthedocs.io/en/latest/). Please note that these have been configured for the specific situation of the user (i.e. don't drag and drop module files). Modules are stored in the `/modules` directory. The list of available modules is as follows:
+
 * pandoc
 * scripts
 
 ## Singularity Definition Files
-A collection of definition files that I have used to build containers needed by users using [Singularity](https://sylabs.io/). I prefer to host my images on [Sylabs Cloud](http://cloud.sylabs.io/home), but there are many other ways to host singularity images. Generally, I design the containers specifc to the individual user's needs, but sometimes I will use base images that I have built myself. For detailed use of each definition file please refer to the [how-to-use](#how-to-use) section of the documentation. The list of available definition files is as follows:
+A collection of definition files that I have used to build containers needed by users using [Singularity](https://sylabs.io/). I prefer to host my images on [Sylabs Cloud](http://cloud.sylabs.io/home), but there are many other ways to host singularity images. Generally, I design the containers specifc to the individual user's needs, but sometimes I will use base images that I have built myself. For specific information on definition files please refer to the [how-to-use](#how-to-use) section of the documentation. The definiton files are stored in `/src/def`. The list of available definition files is as follows:
+
 * Cadabra2
 * Deeplearning Toolbox
 * HiC-Pro
@@ -125,6 +129,7 @@ $ setup_comsol_symlink
 ```
 
 Disk Quota Errors beware!
+
 #
 ### setup_conda_symlink
 Same deal as comsol. Users love it, and conda loves writing out to its cache in the home directory. Let users create conda environments to their hearts content by having them use the following commands:
@@ -134,9 +139,11 @@ $ module use /gpfs/group/dml129/default/sw/modules
 $ module load scripts
 $ setup_conda_symlink
 ```
+
 #
 ## Modules
 #
+
 ### pandoc
 Pandoc is great because it allows you to convert to many different markup languages. It is even a dependency for some popular packages, such as Rmarkdown. I now bring users the power to use this great tool with the following commands:
 
@@ -164,6 +171,7 @@ for a particular purpose.
 ```
 To get more detailed information on pandoc you can visit their website here: https://pandoc.org/MANUAL.html
 #
+
 ### scripts
 This module is how to access the scripts I have written. Simply use the following commands to load the module:
 
@@ -182,18 +190,80 @@ $ scriptslist
 ```
 
 If you are interested in writing your own shell scripts you can refer to this guide here: https://www.tutorialspoint.com/unix/shell_scripting.htm
+
 #
 ## Singularity Definition Files
 #
+
 ### Cadabra2
+The Cadabra software is a field-theory motivated approach to computer algebra. Here it is installed inside a singularity container built upon Debian 9. I just host the definition file here but build the image is pretty easy.
+
+Cadabra2 is available as a module on the cluster and can be loaded using the following commands:
+```bash
+$ module use /gpfs/group/dml129/default/nucci2/sw/modules
+$ module load cadabra/2.2.9
+```
+
+To launch the Cadabra2 notebook you can use the following command:
+
+```bash
+$ cadabra-gtk
+```
+
+To launch the Cadabra2 CLI you can use the following command:
+
+```bash
+$ cadabra
+```
+
 #
 ### Deeplearning Toolbox
+The Deeplearing Toolbox is just a collection of python programs that are used for deep learning. You can find the likes of tensorflow, keras, and OpenCV2 installed inside of it. The definition file is just hosted here.
+
+The Deeplearning Toolbox is available as a module on the cluster, and it can be loaded using the following commands:
+
+```bash
+$ module use /gpfs/group/dml129/default/nucci2/sw/modules
+$ module load python-deeplearning-toolbox/1.1
+```
+
+To get a full list of what is installed inside the container simply use the following command:
+
+```bash
+$ module help python-deeplearning-toolbox/1.1
+```
+
 #
 ### HiC-Pro
+HiC-Pro is an optimized and flexible pipeline for Hi-C data processing. Luckily, this is an easy program to inside a container. The definition file is just hosted here.
+
+HiC-Pro is available as a module and can be loaded using the following commands:
+
+```bash
+$ module use /gpfs/group/dml129/default/nucci2/sw/modules
+$ module load hicpro/2.11.4
+```
+
+Simply call the HiC-Pro executable to use it:
+
+```bash
+$ HiC-Pro <options> <arguments>
+```
+
 #
 ### Libbi
+LibBi is used for state-space modelling and Bayesian inference on modern computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters. This is an image that I built for a user. Unfortunately it is not available as a module.
+
 #
 ### NLopt
+NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. This is another container that I built for a user. Unfortunately it is also not available to be used as a module.
+
+#
+### RStudio Base
+RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio. 
+
+# License
+This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html
 
 # Troubleshooting
 If you run into any issues regarding the use of anything in this repository then please contact Jason at either jcn23@psu.edu or at the ICDS i-ASK center (iask@ics.psu.edu). If you do run into an issue, please be as descriptive as possible.

@@ -6,8 +6,8 @@ The list of current scripts in the package:
   - setup_comsol_symlink
   - setup_conda_symlink 
 
-For a guide on how to use these tools, please visit:
-<todo: Create repository with markdown file>  ]])
+For a guide on how to use these tools, please visit this URL:
+]])
 
 whatis("Description: A collection of scripts to help out i-ASK")
 whatis("Nuccitils Version: v1.0")

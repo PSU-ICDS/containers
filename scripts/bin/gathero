@@ -8,12 +8,12 @@ mkdir -p ${HOME}/scratch/${JOB_ID}_info
 ROOT_DIR=${HOME}/scratch/${JOB_ID}_info
 
 # Use checkjob to get basic input
-echo Using checkjob on ${JOB_ID}
+echo "Using checkjob on ${JOB_ID}"
 sudo `which checkjob` -v ${JOB_ID} --timeout=300 > ${ROOT_DIR}/checkjob_output.txt
 
 # Extract data from checkjob_output.txt insert it
 # into a dummy file stored in /tmp
-echo Getting user id and allocation of ${JOB_IB}
+echo "Getting user id and allocation of ${JOB_IB}"
 cat ${ROOT_DIR}/checkjob_output.txt | awk '/Creds:*/' > /tmp/${JOB_ID}_tmp.txt
 
 # Use python scripts to retreive user id and allocation name
@@ -32,7 +32,7 @@ echo -e "\nmam-list-accounts -u ${USER_ID}\n"
 sudo `which mam-list-accounts` -u ${USER_ID} >> ${ROOT_DIR}/user_info.txt
 
 # Gather neccessary info on allocation
-echo Gathering info on ${ALLOC_ID}
+echo "Gathering info on ${ALLOC_ID}"
 echo -e "showq -w acct=${ALLOC_ID}\n" >> ${ROOT_DIR}/allocation_info.txt
 showq -w acct=${ALLOC_ID}
 echo -e "\nmam-list-funds -u ${USER_ID} -h\n" >> ${ROOT_DIR}/allocation_info.txt
@@ -48,6 +48,6 @@ cat ${ROOT_DIR}/allocation_info.txt >> ${ROOT_DIR}/all_info.txt
 
 # Create zip file that can be sent to the user 
 # (Going to assume that the general majority is on Windows)
-echo Creating zip archive
+echo "Creating zip archive"
 `which zip` -r ${HOME}/scratch/${JOB_ID}_info.zip ${ROOT_DIR}
 mv ${HOME}/scratch/${JOB_ID}_info.zip ${ROOT_DIR}
