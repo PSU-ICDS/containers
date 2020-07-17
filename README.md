@@ -2,8 +2,8 @@
 * [Introduction](#introduction)
 * [What is here](#what-is-here)
 * [How-to-Use](#how-to-use)
-* [Troubleshooting](#troubleshooting)
 * [License](#license)
+* [Troubleshooting](#troubleshooting)
 
 # Introduction
 

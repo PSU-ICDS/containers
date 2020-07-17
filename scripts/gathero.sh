@@ -28,17 +28,18 @@ echo -e "accout_quota_check ${USER_ID}\n" >> ${ROOT_DIR}/user_info.txt
 account_quota_check ${USER_ID} >> ${ROOT_DIR}/user_info.txt
 echo -e "\nqstat -u ${USER_ID} -n\n" >> ${ROOT_DIR}/user_info.txt
 qstat -u ${USER_ID} -n >> ${ROOT_DIR}/user_info.txt
-echo -e "\nmam-list-accounts -u ${USER_ID}\n"
+echo -e "\nmam-list-accounts -u ${USER_ID}\n" >> ${ROOT_DIR}/user_info.txt
 sudo `which mam-list-accounts` -u ${USER_ID} >> ${ROOT_DIR}/user_info.txt
 
 # Gather neccessary info on allocation
 echo "Gathering info on ${ALLOC_ID}"
 echo -e "showq -w acct=${ALLOC_ID}\n" >> ${ROOT_DIR}/allocation_info.txt
-showq -w acct=${ALLOC_ID}
+showq -w acct=${ALLOC_ID} >> ${ROOT_DIR}/allocation_info.txt
 echo -e "\nmam-list-funds -u ${USER_ID} -h\n" >> ${ROOT_DIR}/allocation_info.txt
 sudo `which mam-list-funds` -u ${USER_ID} -h >> ${ROOT_DIR}/allocation_info.txt
 
 # Put the files together for fast read if need be
+echo "Combining files"
 echo -e "checkjob -v ${JOB_ID} --timeout=300\n" >> ${ROOT_DIR}/all_info.txt
 cat ${ROOT_DIR}/checkjob_output.txt >> ${ROOT_DIR}/all_info.txt
 echo -e "\n" >> ${ROOT_DIR}/all_info.txt
@@ -49,5 +50,8 @@ cat ${ROOT_DIR}/allocation_info.txt >> ${ROOT_DIR}/all_info.txt
 # Create zip file that can be sent to the user 
 # (Going to assume that the general majority is on Windows)
 echo "Creating zip archive"
-`which zip` -r ${HOME}/scratch/${JOB_ID}_info.zip ${ROOT_DIR}
+`which zip` -r ${HOME}/scratch/${JOB_ID}_info.zip ${ROOT_DIR} >& /dev/null
 mv ${HOME}/scratch/${JOB_ID}_info.zip ${ROOT_DIR}
+
+echo -e "\nFiles stored in ${ROOT_DIR}\n"
+echo "Finished!"
