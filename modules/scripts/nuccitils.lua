@@ -7,7 +7,7 @@ The list of current scripts in the package:
   - setup_conda_symlink 
 
 For a guide on how to use these tools, please visit this URL:
-]])
+https://github.com/NucciTheBoss/i-ASK]])
 
 whatis("Description: A collection of scripts to help out i-ASK")
 whatis("Nuccitils Version: v1.0")

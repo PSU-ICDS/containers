@@ -1,0 +1,177 @@
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#what-is-here">What is here</a></li>
+<li><a href="#how-to-use">How-to-Use</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h1 id="introduction">Introduction</h1>
+<p>Welcome to my i-ASK repository where I store all the files that I have worked on. Here you can find my module files, various shell scripts, singularity images, etc.</p>
+<h1 id="what-is-here">What is here</h1>
+<ul>
+<li><a href="#scripts">Scripts</a></li>
+<li><a href="#modules">Modules</a></li>
+<li><a href="#singularity-definition-files">Singularity Definition Files</a></li>
+</ul>
+<h2 id="scripts">Scripts</h2>
+<p>A collection of shell scripts that I use to help users. Most are written for bash, but I will look into supporting users that prefer to use non-bash shells such as tcsh. Scripts are stored in <code>/scripts</code>, and the executables are stored in <code>/scripts/bin</code>. For detailed use of each script please refer to the <a href="#how-to-use">how-to-use</a> section of the documentation. The list of available scripts is as follows: ### Bash</p>
+<ul>
+<li>collecter</li>
+<li>gathero</li>
+<li>relink_work_scratch</li>
+<li>setup_comsol_symlink</li>
+<li>setup_conda_symlink</li>
+</ul>
+<h2 id="modules">Modules</h2>
+<p>A collection of modules that I have created for users. Written in lua for use with <a href="https://lmod.readthedocs.io/en/latest/">Lmod</a>. Please note that these have been configured for the specific situation of the user (i.e. don’t drag and drop module files). Modules are stored in the <code>/modules</code> directory. The list of available modules is as follows:</p>
+<ul>
+<li>pandoc</li>
+<li>scripts</li>
+</ul>
+<h2 id="singularity-definition-files">Singularity Definition Files</h2>
+<p>A collection of definition files that I have used to build containers needed by users using <a href="https://sylabs.io/">Singularity</a>. I prefer to host my images on <a href="http://cloud.sylabs.io/home">Sylabs Cloud</a>, but there are many other ways to host singularity images. Generally, I design the containers specifc to the individual user’s needs, but sometimes I will use base images that I have built myself. For specific information on definition files please refer to the <a href="#how-to-use">how-to-use</a> section of the documentation. The definiton files are stored in <code>/src/def</code>. The list of available definition files is as follows:</p>
+<ul>
+<li>Cadabra2</li>
+<li>Deeplearning Toolbox</li>
+<li>HiC-Pro</li>
+<li>Libbi</li>
+<li>NLopt</li>
+<li>RStudio Base</li>
+</ul>
+<h1 id="how-to-use">How-to-Use</h1>
+<ul>
+<li><p>Scripts</p>
+<ul>
+<li><a href="#collecter">collecter</a></li>
+<li><a href="#gathero">gathero</a></li>
+<li><a href="#relink_work_scratch">relink_work_scratch</a></li>
+<li><a href="#setup_comsol_symlink">setup_comsol_symlink</a></li>
+<li><a href="#setup_conda_symlink">setup_conda_symlink</a></li>
+</ul></li>
+<li><p>Modules</p>
+<ul>
+<li><a href="#pandoc">pandoc</a></li>
+<li><a href="#scripts">scripts</a></li>
+</ul></li>
+<li><p>Singularity Definition Files</p>
+<ul>
+<li><a href="#cadabra2">Cadabra2</a></li>
+<li><a href="#deeplearning-toolbox">Deeplearning Toolbox</a></li>
+<li><a href="#hic-pro">HiC-Pro</a></li>
+<li><a href="#libbi">Libbi</a></li>
+<li><a href="#nlopt">NLopt</a></li>
+<li><a href="#rstudio-base">RStudio Base</a></li>
+</ul></li>
+</ul>
+<h2 id="scripts-1">Scripts</h2>
+<h1 id="section"></h1>
+<h3 id="collecter">collecter</h3>
+<p>A collecter is someone who collects. Collecter is a simple script that collects info on the user’s home directory. Produces a tar archive containing info on the users .bashrc, .bash_history, .bash_profile, .bash_aliases, directory size, etc. Pretty much helpful anytime a user is having issues with anything. With this script the user will need to use it, and then send the responding tech the tar file. Here are the commands you should send to the user:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">$ <span class="ex">collecter</span> <span class="co">#=&gt; Creates ${USER}_info.tar.gz</span></a></code></pre></div>
+<p>It prints out a help message directing the user to use Open Ondemand to download the tar file. Once they send back the file simply unzip it using tar (or 7zip if using Windows) and examine the contents:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf <span class="va">${USER}</span>_info.tar.gz <span class="co">#=&gt; Creates directory named ${USER}_info</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="fu">less</span> <span class="va">${USER}</span>_info/<span class="va">${USER}</span>_bashrc.txt</a></code></pre></div>
+<p>All the files will be named after the user so you know who you’re looking at. Now go find what’s wrong! # ### gathero Gathering is for those who want information, and that’s exactly what gathero does! Too often are we as techs left wondering, “Why won’t this job start? Why was this job suspended?” First we run checkjob. Then maybe we use account_quota_check or mam-list-accounts. Well now we no longer have to do this. Gathero does this for us! Simply get the job id from the user and use the following commands:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">$ <span class="ex">gathero</span> <span class="va">${JOB_ID}</span> <span class="co">#=&gt; Creates ${JOB_ID}_info directory in ${HOME}/scratch</span></a></code></pre></div>
+<p>Now there is a lot that goes on here, but there are 5 big things that this script does:</p>
+<ol type="1">
+<li>Creates the file checkjob_output.txt, which is generated from the output of <code>checkjob -v ${JOB_ID} --timeout=300</code></li>
+<li>Creates the file user_info.txt, which is generated from the output of <code>account_quota_check ${USER}</code>, <code>qstat -u ${USER}</code>, and <code>mam-list-accounts -u ${USER}</code></li>
+<li>Creates the file allocation_info.txt, which is generated from the output of <code>showq -w acct=${ALLOC_ID}</code> and <code>mam-list-funds -u ${USER} -h</code></li>
+<li>Creates the file all_info.txt, which is generated by concatenating checkjob_output.txt, user_info.txt, and allocation_info.txt together (for those of us who are busy)</li>
+<li>Creates the file <code>${JOB_ID}_info.zip</code>, which can be downloaded and mailed to the inquistive user</li>
+</ol>
+<p>Simply read through the files, find what’s wrong with the job, and mail of the zip file so the user knows what you’re talking about:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="bu">cd</span> <span class="va">${HOME}</span>/scratch/<span class="va">${JOB_ID}</span>_info</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">$ <span class="fu">less</span> all_info.txt</a></code></pre></div>
+<h1 id="section-1"></h1>
+<h3 id="relink_work_scratch">relink_work_scratch</h3>
+<p>You ever have one of those moments where you can’t tell why a user’s home directory is full? Well, I’ve been working here long enough to discover that some user’s unlink their <code>work</code> and <code>scratch</code> directories and use <code>mkdir</code> to create them. What they don’t know is that this will count towards their home directory’s storage limit. Generally this is fixable but it requires knowledge of how symlinks work. relink_work_scratch takes care of this for you. Simply have the user execute the following commands:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">$ <span class="ex">relink_work_scratch</span></a></code></pre></div>
+<p>This will rebuild the symlinks <code>work</code> and <code>scratch</code>, plus create the directories <code>not_real_work</code> within <code>work</code> and <code>not_real_scratch</code> within <code>scratch</code>. Really want to hammer home that <code>work</code> and <code>scratch</code> are actually symlinks. # ### setup_comsol_symlink User’s like to use comsol. Comsol likes to write out to its cache in the home directory. What do you get? “Error: Disk Quota Exceeded.” Generally, I would have users either delete the cache or create a symlink, but I found that users will mess it up quite often. Therefore, I wrote this shell script. Have the user use the following commands to create their symlink:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">$ <span class="ex">setup_comsol_symlink</span></a></code></pre></div>
+<p>Disk Quota Errors beware!</p>
+<h1 id="section-2"></h1>
+<h3 id="setup_conda_symlink">setup_conda_symlink</h3>
+<p>Same deal as comsol. Users love it, and conda loves writing out to its cache in the home directory. Let users create conda environments to their hearts content by having them use the following commands:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">$ <span class="ex">setup_conda_symlink</span></a></code></pre></div>
+<h1 id="section-3"></h1>
+<h2 id="modules-1">Modules</h2>
+<h1 id="section-4"></h1>
+<h3 id="pandoc">pandoc</h3>
+<p>Pandoc is great because it allows you to convert to many different markup languages. It is even a dependency for some popular packages, such as Rmarkdown. I now bring users the power to use this great tool with the following commands:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">$ <span class="ex">module</span> load pandoc</a></code></pre></div>
+<p>To check that the module works, use the following command:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">pandoc</span> --version</a></code></pre></div>
+<p>You should see the following printed out to your command line:</p>
+<pre><code>pandoc 2.10
+Compiled with pandoc-types 1.21, texmath 0.12.0.2, skylighting 0.8.5
+Default user data directory: /storage/home/${USER}/.local/share/pandoc or /storage/home/${USER}/.pandoc
+Copyright (C) 2006-2020 John MacFarlane
+Web:  https://pandoc.org
+This is free software; see the source for copying conditions.
+There is no warranty, not even for merchantability or fitness
+for a particular purpose.</code></pre>
+<p>To get more detailed information on pandoc you can visit their website here: https://pandoc.org/MANUAL.html #</p>
+<h3 id="scripts-2">scripts</h3>
+<p>This module is how to access the scripts I have written. Simply use the following commands to load the module:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a></code></pre></div>
+<p>To see a list of available scripts you can use one of the following commands:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1">$ <span class="ex">module</span> help scripts</a></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1">$ <span class="ex">scriptslist</span></a></code></pre></div>
+<p>If you are interested in writing your own shell scripts you can refer to this guide here: https://www.tutorialspoint.com/unix/shell_scripting.htm</p>
+<h1 id="section-5"></h1>
+<h2 id="singularity-definition-files-1">Singularity Definition Files</h2>
+<h1 id="section-6"></h1>
+<h3 id="cadabra2">Cadabra2</h3>
+<p>The Cadabra software is a field-theory motivated approach to computer algebra. Here it is installed inside a singularity container built upon Debian 9. I just host the definition file here but build the image is pretty easy.</p>
+<p>Cadabra2 is available as a module on the cluster and can be loaded using the following commands:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">$ <span class="ex">module</span> load cadabra/2.2.9</a></code></pre></div>
+<p>To launch the Cadabra2 notebook you can use the following command:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="ex">cadabra-gtk</span></a></code></pre></div>
+<p>To launch the Cadabra2 CLI you can use the following command:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1">$ <span class="ex">cadabra</span></a></code></pre></div>
+<h1 id="section-7"></h1>
+<h3 id="deeplearning-toolbox">Deeplearning Toolbox</h3>
+<p>The Deeplearing Toolbox is just a collection of python programs that are used for deep learning. You can find the likes of tensorflow, keras, and OpenCV2 installed inside of it. The definition file is just hosted here.</p>
+<p>The Deeplearning Toolbox is available as a module on the cluster, and it can be loaded using the following commands:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">$ <span class="ex">module</span> load python-deeplearning-toolbox/1.1</a></code></pre></div>
+<p>To get a full list of what is installed inside the container simply use the following command:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1">$ <span class="ex">module</span> help python-deeplearning-toolbox/1.1</a></code></pre></div>
+<h1 id="section-8"></h1>
+<h3 id="hic-pro">HiC-Pro</h3>
+<p>HiC-Pro is an optimized and flexible pipeline for Hi-C data processing. Luckily, this is an easy program to inside a container. The definition file is just hosted here.</p>
+<p>HiC-Pro is available as a module and can be loaded using the following commands:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">$ <span class="ex">module</span> load hicpro/2.11.4</a></code></pre></div>
+<p>Simply call the HiC-Pro executable to use it:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1">$ <span class="ex">HiC-Pro</span> <span class="op">&lt;</span>options<span class="op">&gt;</span> <span class="op">&lt;</span>arguments<span class="op">&gt;</span></a></code></pre></div>
+<h1 id="section-9"></h1>
+<h3 id="libbi">Libbi</h3>
+<p>LibBi is used for state-space modelling and Bayesian inference on modern computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters. This is an image that I built for a user. Unfortunately it is not available as a module.</p>
+<h1 id="section-10"></h1>
+<h3 id="nlopt">NLopt</h3>
+<p>NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. This is another container that I built for a user. Unfortunately it is also not available to be used as a module.</p>
+<h1 id="section-11"></h1>
+<h3 id="rstudio-base">RStudio Base</h3>
+<p>RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio.</p>
+<h1 id="license">License</h1>
+<p>This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html</p>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<p>If you run into any issues regarding the use of anything in this repository then please contact Jason at either jcn23@psu.edu or at the ICDS i-ASK center (iask@ics.psu.edu). If you do run into an issue, please be as descriptive as possible.</p>
