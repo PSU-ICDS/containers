@@ -13,6 +13,7 @@
 <li><a href="#scripts">Scripts</a></li>
 <li><a href="#modules">Modules</a></li>
 <li><a href="#singularity-definition-files">Singularity Definition Files</a></li>
+<li><a href="#installers">Installers</a></li>
 </ul>
 <h2 id="scripts">Scripts</h2>
 <p>A collection of shell scripts that I use to help users. Most are written for bash, but I will look into supporting users that prefer to use non-bash shells such as tcsh. Scripts are stored in <code>/scripts</code>, and the executables are stored in <code>/scripts/bin</code>. For detailed use of each script please refer to the <a href="#how-to-use">how-to-use</a> section of the documentation. The list of available scripts is as follows: ### Bash</p>
@@ -35,9 +36,16 @@
 <li>Cadabra2</li>
 <li>Deeplearning Toolbox</li>
 <li>HiC-Pro</li>
+<li>LAYNII-def</li>
 <li>Libbi</li>
 <li>NLopt</li>
 <li>RStudio Base</li>
+</ul>
+<h2 id="installers">Installers</h2>
+<p>This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:</p>
+<ul>
+<li>LAYNII</li>
+<li>R-4.0.2</li>
 </ul>
 <h1 id="how-to-use">How-to-Use</h1>
 <ul>
@@ -59,9 +67,15 @@
 <li><a href="#cadabra2">Cadabra2</a></li>
 <li><a href="#deeplearning-toolbox">Deeplearning Toolbox</a></li>
 <li><a href="#hic-pro">HiC-Pro</a></li>
+<li><a href="#laynii-def">LAYNII-def</a></li>
 <li><a href="#libbi">Libbi</a></li>
 <li><a href="#nlopt">NLopt</a></li>
 <li><a href="#rstudio-base">RStudio Base</a></li>
+</ul></li>
+<li><p>Installers</p>
+<ul>
+<li><a href="#laynii">LAYNII</a></li>
+<li><a href="#r-4.0.2">R-4.0.2</a></li>
 </ul></li>
 </ul>
 <h2 id="scripts-1">Scripts</h2>
@@ -75,12 +89,17 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf <span class="va">${USER}</span>_info.tar.gz <span class="co">#=&gt; Creates directory named ${USER}_info</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="fu">less</span> <span class="va">${USER}</span>_info/<span class="va">${USER}</span>_bashrc.txt</a></code></pre></div>
 <p>All the files will be named after the user so you know who you’re looking at. Now go find what’s wrong!</p>
+<h4 id="update-842020">Update 8/4/2020</h4>
+<p>As of this update <code>collecter</code> can be invoked as <code>collector</code>. This update was made because many users are used to just spelling “collector.” The invocation is the same as <code>collecter</code>, but here the commands below for reference:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">$ <span class="ex">collector</span> <span class="co">#=&gt; Creates ${USER}_info.tar.gz</span></a></code></pre></div>
 <h1 id="section-1"></h1>
 <h3 id="gathero">gathero</h3>
 <p>Gathering is for those who want information, and that’s exactly what gathero does! Too often are we as techs left wondering, “Why won’t this job start? Why was this job suspended?” First we run checkjob. Then maybe we use account_quota_check or mam-list-accounts. Well now we no longer have to do this. Gathero does this for us! Simply get the job id from the user and use the following commands:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">$ <span class="ex">gathero</span> <span class="va">${JOB_ID}</span> <span class="co">#=&gt; Creates ${JOB_ID}_info directory in ${HOME}/scratch</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">$ <span class="ex">gathero</span> <span class="va">${JOB_ID}</span> <span class="co">#=&gt; Creates ${JOB_ID}_info directory in ${HOME}/scratch</span></a></code></pre></div>
 <p>Now there is a lot that goes on here, but there are 5 big things that this script does:</p>
 <ol type="1">
 <li>Creates the file checkjob_output.txt, which is generated from the output of <code>checkjob -v ${JOB_ID} --timeout=300</code></li>
@@ -90,37 +109,37 @@
 <li>Creates the file <code>${JOB_ID}_info.zip</code>, which can be downloaded and mailed to the inquistive user</li>
 </ol>
 <p>Simply read through the files, find what’s wrong with the job, and mail of the zip file so the user knows what you’re talking about:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="bu">cd</span> <span class="va">${HOME}</span>/scratch/<span class="va">${JOB_ID}</span>_info</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">$ <span class="fu">less</span> all_info.txt</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="bu">cd</span> <span class="va">${HOME}</span>/scratch/<span class="va">${JOB_ID}</span>_info</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">$ <span class="fu">less</span> all_info.txt</a></code></pre></div>
 <h1 id="section-2"></h1>
 <h3 id="relink_work_scratch">relink_work_scratch</h3>
 <p>You ever have one of those moments where you can’t tell why a user’s home directory is full? Well, I’ve been working here long enough to discover that some user’s unlink their <code>work</code> and <code>scratch</code> directories and use <code>mkdir</code> to create them. What they don’t know is that this will count towards their home directory’s storage limit. Generally this is fixable but it requires knowledge of how symlinks work. relink_work_scratch takes care of this for you. Simply have the user execute the following commands:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">$ <span class="ex">relink_work_scratch</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">$ <span class="ex">relink_work_scratch</span></a></code></pre></div>
 <p>This will rebuild the symlinks <code>work</code> and <code>scratch</code>, plus create the directories <code>not_real_work</code> within <code>work</code> and <code>not_real_scratch</code> within <code>scratch</code>. Really want to hammer home that <code>work</code> and <code>scratch</code> are actually symlinks.</p>
 <h1 id="section-3"></h1>
 <h3 id="setup_comsol_symlink">setup_comsol_symlink</h3>
 <p>User’s like to use comsol. Comsol likes to write out to its cache in the home directory. What do you get? “Error: Disk Quota Exceeded.” Generally, I would have users either delete the cache or create a symlink, but I found that users will mess it up quite often. Therefore, I wrote this shell script. Have the user use the following commands to create their symlink:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">$ <span class="ex">setup_comsol_symlink</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">$ <span class="ex">setup_comsol_symlink</span></a></code></pre></div>
 <p>Disk Quota Errors beware!</p>
 <h1 id="section-4"></h1>
 <h3 id="setup_conda_symlink">setup_conda_symlink</h3>
 <p>Same deal as comsol. Users love it, and conda loves writing out to its cache in the home directory. Let users create conda environments to their hearts content by having them use the following commands:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">$ <span class="ex">setup_conda_symlink</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">$ <span class="ex">setup_conda_symlink</span></a></code></pre></div>
 <h1 id="section-5"></h1>
 <h2 id="modules-1">Modules</h2>
 <h1 id="section-6"></h1>
 <h3 id="pandoc">pandoc</h3>
 <p>Pandoc is great because it allows you to convert to many different markup languages. It is even a dependency for some popular packages, such as Rmarkdown. I now bring users the power to use this great tool with the following commands:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">$ <span class="ex">module</span> load pandoc</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">$ <span class="ex">module</span> load pandoc</a></code></pre></div>
 <p>To check that the module works, use the following command:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">pandoc</span> --version</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">pandoc</span> --version</a></code></pre></div>
 <p>You should see the following printed out to your command line:</p>
 <pre><code>pandoc 2.10
 Compiled with pandoc-types 1.21, texmath 0.12.0.2, skylighting 0.8.5
@@ -133,12 +152,12 @@ for a particular purpose.</code></pre>
 <p>To get more detailed information on pandoc you can visit their website here: https://pandoc.org/MANUAL.html #</p>
 <h3 id="scripts-2">scripts</h3>
 <p>This module is how to access the scripts I have written. Simply use the following commands to load the module:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a></code></pre></div>
 <p>To see a list of available scripts you can use one of the following commands:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1">$ <span class="ex">module</span> help scripts</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1">$ <span class="ex">module</span> help scripts</a></code></pre></div>
 <p>or</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1">$ <span class="ex">scriptslist</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">scriptslist</span></a></code></pre></div>
 <p>If you are interested in writing your own shell scripts you can refer to this guide here: https://www.tutorialspoint.com/unix/shell_scripting.htm</p>
 <h1 id="section-7"></h1>
 <h2 id="singularity-definition-files-1">Singularity Definition Files</h2>
@@ -146,37 +165,70 @@ for a particular purpose.</code></pre>
 <h3 id="cadabra2">Cadabra2</h3>
 <p>The Cadabra software is a field-theory motivated approach to computer algebra. Here it is installed inside a singularity container built upon Debian 9. I just host the definition file here but build the image is pretty easy.</p>
 <p>Cadabra2 is available as a module on the cluster and can be loaded using the following commands:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">$ <span class="ex">module</span> load cadabra/2.2.9</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">$ <span class="ex">module</span> load cadabra/2.2.9</a></code></pre></div>
 <p>To launch the Cadabra2 notebook you can use the following command:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="ex">cadabra-gtk</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1">$ <span class="ex">cadabra-gtk</span></a></code></pre></div>
 <p>To launch the Cadabra2 CLI you can use the following command:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1">$ <span class="ex">cadabra</span></a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1">$ <span class="ex">cadabra</span></a></code></pre></div>
 <h1 id="section-9"></h1>
 <h3 id="deeplearning-toolbox">Deeplearning Toolbox</h3>
 <p>The Deeplearing Toolbox is just a collection of python programs that are used for deep learning. You can find the likes of tensorflow, keras, and OpenCV2 installed inside of it. The definition file is just hosted here.</p>
 <p>The Deeplearning Toolbox is available as a module on the cluster, and it can be loaded using the following commands:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">$ <span class="ex">module</span> load python-deeplearning-toolbox/1.1</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">$ <span class="ex">module</span> load python-deeplearning-toolbox/1.1</a></code></pre></div>
 <p>To get a full list of what is installed inside the container simply use the following command:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1">$ <span class="ex">module</span> help python-deeplearning-toolbox/1.1</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1">$ <span class="ex">module</span> help python-deeplearning-toolbox/1.1</a></code></pre></div>
 <h1 id="section-10"></h1>
 <h3 id="hic-pro">HiC-Pro</h3>
 <p>HiC-Pro is an optimized and flexible pipeline for Hi-C data processing. Luckily, this is an easy program to inside a container. The definition file is just hosted here.</p>
 <p>HiC-Pro is available as a module and can be loaded using the following commands:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">$ <span class="ex">module</span> load hicpro/2.11.4</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">$ <span class="ex">module</span> load hicpro/2.11.4</a></code></pre></div>
 <p>Simply call the HiC-Pro executable to use it:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1">$ <span class="ex">HiC-Pro</span> <span class="op">&lt;</span>options<span class="op">&gt;</span> <span class="op">&lt;</span>arguments<span class="op">&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1">$ <span class="ex">HiC-Pro</span> <span class="op">&lt;</span>options<span class="op">&gt;</span> <span class="op">&lt;</span>arguments<span class="op">&gt;</span></a></code></pre></div>
 <h1 id="section-11"></h1>
+<h3 id="laynii-def">LAYNII-def</h3>
+<p>This is a package of standalone layer functional magnetic resonance imaging (layer-fMRI) C++ programs that depends only on a C++ compiler. The purpose of this package is to provide layer-analysis software that are not (yet) included in the other major MRI analysis software. This software was built into a container since it depends on a newer version of glibc. The definition file is just hosted in this repository.</p>
+<h1 id="section-12"></h1>
 <h3 id="libbi">Libbi</h3>
 <p>LibBi is used for state-space modelling and Bayesian inference on modern computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters. This is an image that I built for a user. Unfortunately it is not available as a module.</p>
-<h1 id="section-12"></h1>
+<h1 id="section-13"></h1>
 <h3 id="nlopt">NLopt</h3>
 <p>NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. This is another container that I built for a user. Unfortunately it is also not available to be used as a module.</p>
-<h1 id="section-13"></h1>
+<h1 id="section-14"></h1>
 <h3 id="rstudio-base">RStudio Base</h3>
 <p>RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio.</p>
+<h1 id="section-15"></h1>
+<h2 id="installers-1">Installers</h2>
+<h1 id="section-16"></h1>
+<h3 id="laynii">LAYNII</h3>
+<p>I built this installer to help users locally install LAYNII. The script does nothing fancy, but it does download my LAYNII container stored in the cloud and move the module file to its respective directory. This file can executed anywhere as all it depends on is the <code>${HOME}</code> bash environment variable.</p>
+<p>You can use the following instructions to construct the installer:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" data-line-number="1">$ <span class="fu">tar</span> -czvf LAYNII_installer.tar.gz LAYNII  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<p>Then, send the tar file to the user and have them execute the following commands:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf LAYNII_installer.tar.gz</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">$ <span class="bu">cd</span> LAYNII</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">$ <span class="ex">./INSTALL</span></a></code></pre></div>
+<p>The user should then be able to access the module using the following commands:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" data-line-number="1">$ <span class="ex">module</span> use <span class="va">${HOME}</span>/sw/modules</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">$ <span class="ex">module</span> load laynii/1.5.6</a></code></pre></div>
+<p>Now the user should have their own LAYNII module!</p>
+<h1 id="section-17"></h1>
+<h3 id="r-4.0.2">R-4.0.2</h3>
+<p>I built this installer to help users and groups install the newest version of R. R has a lot of dependencies, and this installer should take care of them. This installer is a little bit more involved since R is being installed in different locations. The neat thing that this installer does it automatically generate a module file, and it automatically detects if you have a prior R installation.</p>
+<p>You can construct the installer using the following command:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" data-line-number="1">$ <span class="fu">tar</span> -czvf R_4.0.2_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<p>Then, send the tar file to the user and have them execute the following commands:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf R_4.0.2_installer.tar.gz</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">$ <span class="bu">cd</span> R-4.0.2</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
+<p>This scipt will create the <code>modules</code> directory under the desired dir. To load the R module, use the following commands:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">$ <span class="ex">module</span> load r/4.0.2</a></code></pre></div>
+<p>Now users can have the newest version of R!</p>
 <h1 id="license">License</h1>
 <p>This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html</p>
 <h1 id="troubleshooting">Troubleshooting</h1>

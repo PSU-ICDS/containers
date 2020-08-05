@@ -15,6 +15,7 @@ various shell scripts, singularity images, etc.
 * [Scripts](#scripts)
 * [Modules](#modules)
 * [Singularity Definition Files](#singularity-definition-files)
+* [Installers](#installers)
 
 ## Scripts
 A collection of shell scripts that I use to help users. Most are written for bash, but I will look into supporting users that prefer to use non-bash shells such as tcsh. Scripts are stored in `/scripts`, and the executables are stored in `/scripts/bin`. For detailed use of each script please refer to the [how-to-use](#how-to-use) section of the documentation. The list of available scripts is as follows:
@@ -38,9 +39,16 @@ A collection of definition files that I have used to build containers needed by 
 * Cadabra2
 * Deeplearning Toolbox
 * HiC-Pro
+* LAYNII-def
 * Libbi
 * NLopt
 * RStudio Base
+
+## Installers
+This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:
+
+* LAYNII
+* R-4.0.2
 
 # How-to-Use
 * Scripts
@@ -61,9 +69,15 @@ A collection of definition files that I have used to build containers needed by 
   * [Cadabra2](#cadabra2)
   * [Deeplearning Toolbox](#deeplearning-toolbox)
   * [HiC-Pro](#hic-pro)
+  * [LAYNII-def](#laynii-def)
   * [Libbi](#libbi)
   * [NLopt](#nlopt)
   * [RStudio Base](#rstudio-base)
+
+* Installers
+
+  * [LAYNII](#laynii)
+  * [R-4.0.2](#r-4.0.2)
 
 ## Scripts
 #
@@ -84,6 +98,15 @@ $ less ${USER}_info/${USER}_bashrc.txt
 ```
 
 All the files will be named after the user so you know who you're looking at. Now go find what's wrong!
+
+#### Update 8/4/2020
+As of this update `collecter` can be invoked as `collector`. This update was made because many users are used to just spelling "collector." The invocation is the same as `collecter`, but here the commands below for reference:
+
+```bash
+$ module use /gpfs/group/dml129/default/sw/modules
+$ module load scripts
+$ collector #=> Creates ${USER}_info.tar.gz
+```
 
 #
 ### gathero
@@ -253,6 +276,10 @@ $ HiC-Pro <options> <arguments>
 ```
 
 #
+### LAYNII-def
+This is a package of standalone layer functional magnetic resonance imaging (layer-fMRI) C++ programs that depends only on a C++ compiler. The purpose of this package is to provide layer-analysis software that are not (yet) included in the other major MRI analysis software. This software was built into a container since it depends on a newer version of glibc. The definition file is just hosted in this repository.
+
+#
 ### Libbi
 LibBi is used for state-space modelling and Bayesian inference on modern computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters. This is an image that I built for a user. Unfortunately it is not available as a module.
 
@@ -262,7 +289,66 @@ NLopt is a free/open-source library for nonlinear optimization, providing a comm
 
 #
 ### RStudio Base
-RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio. 
+RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio.
+
+#
+## Installers
+#
+
+### LAYNII
+I built this installer to help users locally install LAYNII. The script does nothing fancy, but it does download my LAYNII container stored in the cloud and move the module file to its respective directory. This file can executed anywhere as all it depends on is the `${HOME}` bash environment variable.
+
+You can use the following instructions to construct the installer:
+
+```bash
+$ tar -czvf LAYNII_installer.tar.gz LAYNII  #=> Clone installers directory
+```
+
+Then, send the tar file to the user and have them execute the following commands:
+
+```bash
+$ tar -xzvf LAYNII_installer.tar.gz
+$ cd LAYNII
+$ chmod +x INSTALL
+$ ./INSTALL
+```
+
+The user should then be able to access the module using the following commands:
+
+```bash
+$ module use ${HOME}/sw/modules
+$ module load laynii/1.5.6
+```
+
+Now the user should have their own LAYNII module!
+
+#
+### R-4.0.2
+I built this installer to help users and groups install the newest version of R. R has a lot of dependencies, and this installer should take care of them. This installer is a little bit more involved since R is being installed in different locations. The neat thing that this installer does it automatically generate a module file, and it automatically detects if you have a prior R installation.
+
+You can construct the installer using the following command:
+
+```bash
+$ tar -czvf R_4.0.2_installer.tar.gz R-4.0.2  #=> Clone installers directory
+```
+
+Then, send the tar file to the user and have them execute the following commands:
+
+```bash
+$ tar -xzvf R_4.0.2_installer.tar.gz
+$ cd R-4.0.2
+$ chmod +x INSTALL
+$ ./INSTALL /path/to/desired/dir
+```
+
+This scipt will create the `modules` directory under the desired dir. To load the R module, use the following commands:
+
+```bash
+$ module use /path/to/desired/dir/modules
+$ module load r/4.0.2
+```
+
+Now users can have the newest version of R!
 
 # License
 This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html
