@@ -22,30 +22,31 @@ mkdir -p ${R_BASE}/tmp
 R_TMP=${R_BASE}/tmp
 
 # Download R 4.0.2 and RPM that contains dependencies
-echo "Downloading source files"
-cd ${R_TMP}
-wget https://cran.r-project.org/src/base/R-4/R-4.0.2.tar.gz
-wget http://springdale.math.ias.edu/data/puias/computational/6/SRPMS/R-3.4.3-1.sdl6.src.rpm
+echo "Copying source files"
+cp ./src/bzip2-1.0.6.tar.gz ${R_TMP}/bzip2-1.0.6.tar.gz
+cp ./src/curl-7.56.1.tar.bz2 ${R_TMP}/curl-7.56.1.tar.bz2
+cp ./src/pcre-8.41.tar.bz2 ${R_TMP}/pcre-8.41.tar.bz2
+cp ./src/R-4.0.2.tar.gz ${R_TMP}/R-4.0.2.tar.gz
+cp ./src/xz-5.2.3.tar.bz2 ${R_TMP}/xz-5.2.3.tar.bz2
+cp ./src/zlib-1.2.11.tar.gz ${R_TMP}/zlib-1.2.11.tar.gz
 
-if [[ ! -f R-4.0.2.tar.gz || ! -f R-3.4.3-1.sdl6.src.rpm ]]; then
-    echo "Something went wrong downloading source files"
+cd ${R_TMP}
+if [[ ! -f bzip2-1.0.6.tar.gz || ! -f curl-7.56.1.tar.bz2 || ! -f pcre-8.41.tar.bz2 || ! -f R-4.0.2.tar.gz || ! -f xz-5.2.3.tar.bz2 || ! -f zlib-1.2.11.tar.gz ]]; then
+    echo "Something went wrong tying to copy the source files"
     echo "Please contact iask@ics.psu.edu for assistance"
     exit
+    
+else
+    mkdir -p ${R_TMP}/build
+    # Extract source files and store them in build
+    echo "Extracting and uncompressing source files"
+    tar -xzvf bzip2-1.0.6.tar.gz -C build
+    tar -xjvf curl-7.56.1.tar.bz2 -C build
+    tar -xjvf pcre-8.41.tar.bz2 -C build
+    tar -xzvf R-4.0.2.tar.gz -C build
+    tar -xjvf xz-5.2.3.tar.bz2 -C build
+    tar -xzvf zlib-1.2.11.tar.gz -C build
 fi
-
-# Extract files from rpm file
-rpm2cpio R-3.4.3-1.sdl6.src.rpm | cpio -idmv
-
-mkdir -p ${R_TMP}/build
-
-# Extract source files and store them in build
-echo "Extracting and uncompressing source files"
-tar -xzvf bzip2-1.0.6.tar.gz -C build
-tar -xjvf curl-7.56.1.tar.bz2 -C build
-tar -xjvf pcre-8.41.tar.bz2 -C build
-tar -xzvf R-4.0.2.tar.gz -C build
-tar -xjvf xz-5.2.3.tar.bz2 -C build
-tar -xzvf zlib-1.2.11.tar.gz -C build
 
 # Begin the building of the sources
 echo "Building dependencies"
@@ -165,6 +166,6 @@ echo "Module file has been set up in ${BASE}/modules/r/4.0.2.lua"
 echo -e "\nTo use R 4.0.2 module, use the following commands in your terminal:"
 echo -e "\nmodule use ${BASE}/modules"
 echo "module load r/4.0.2"
-echo -e "\nShould you run into any issue please contact"
-echo "The i-ASK center at iask@ics.psu.edu"
+echo -e "\nShould you run into any issues please contact"
+echo "the i-ASK center at iask@ics.psu.edu for assistance"
 echo -e "\nAll done!"

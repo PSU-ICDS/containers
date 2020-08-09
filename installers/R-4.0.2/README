@@ -1,7 +1,7 @@
 To install R 4.0.2 simply use the following commmands:
 
 $ chmod u+x INSTALL
-$ ./INSTALL </path/to/desired/dir>
+$ ./INSTALL /absolute/path/to/desired/dir
 
 Make sure that you specify which directory you want to
 install under. If you don't you will run into a lot
@@ -18,5 +18,5 @@ use in order to use R 4.0.2. This feature can be overided
 by modifying the .bashrc file, but a module is more conducive
 to how users interact with the system.
 
-If you run into any issues or any questions about this 
+If you run into any issues or have any questions about this 
 installer then please contact Jason at iask@ics.psu.edu

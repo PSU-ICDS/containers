@@ -30,6 +30,7 @@ A collection of shell scripts that I use to help users. Most are written for bas
 ## Modules
 A collection of modules that I have created for users. Written in lua for use with [Lmod](https://lmod.readthedocs.io/en/latest/). Please note that these have been configured for the specific situation of the user (i.e. don't drag and drop module files). Modules are stored in the `/modules` directory. The list of available modules is as follows:
 
+* Julia
 * pandoc
 * scripts
 
@@ -48,6 +49,7 @@ A collection of definition files that I have used to build containers needed by 
 This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:
 
 * LAYNII
+* netCDF-c-base
 * R-4.0.2
 
 # How-to-Use
@@ -61,6 +63,7 @@ This is a collection of scripts that I send to users to help them locally instal
 
 * Modules
 
+  * [Julia](#julia)
   * [pandoc](#pandoc)
   * [scripts](#scripts)
 
@@ -77,6 +80,7 @@ This is a collection of scripts that I send to users to help them locally instal
 * Installers
 
   * [LAYNII](#laynii)
+  * [netCDF-c-base](#netcdf-c-base)
   * [R-4.0.2](#r-4.0.2)
 
 ## Scripts
@@ -127,6 +131,7 @@ Now there is a lot that goes on here, but there are 5 big things that this scrip
 5. Creates the file `${JOB_ID}_info.zip`, which can be downloaded and mailed to the inquistive user
 
 Simply read through the files, find what's wrong with the job, and mail of the zip file so the user knows what you're talking about:
+
 ```bash
 $ cd ${HOME}/scratch/${JOB_ID}_info
 $ less all_info.txt
@@ -169,6 +174,29 @@ $ setup_conda_symlink
 ## Modules
 #
 
+### Julia
+Since Julia is being consistently updated by its developers I like to have the most recent version of it installed on the cluster. I do this so that users can utilize the bleeding-edge of Julia, and get access to the newest features. Since the are many different versions of Julia, I have the ones I have documented installing below:
+
+* [Julia 1.4.2](#julia-1.4.2)
+* [Julia 1.5.0](#julia-1.5.0)
+
+#### Julia 1.4.2
+To load Julia 1.4.2, use the following commands:
+
+```bash
+$ module use /gpfs/group/dml129/default/nucci2/sw/modules
+$ module load julia/1.4.2
+```
+
+#### Julia 1.5.0
+To load Julia 1.5.0, use the following commands:
+
+```bash
+$ module use /gpfs/group/dml129/default/sw/modules
+$ module load julia/1.5.0
+```
+
+#
 ### pandoc
 Pandoc is great because it allows you to convert to many different markup languages. It is even a dependency for some popular packages, such as Rmarkdown. I now bring users the power to use this great tool with the following commands:
 
@@ -206,10 +234,12 @@ $ module load scripts
 ```
 
 To see a list of available scripts you can use one of the following commands:
+
 ```bash
 $ module help scripts
 ```
 or
+
 ```bash
 $ scriptslist
 ```
@@ -224,6 +254,7 @@ If you are interested in writing your own shell scripts you can refer to this gu
 The Cadabra software is a field-theory motivated approach to computer algebra. Here it is installed inside a singularity container built upon Debian 9. I just host the definition file here but build the image is pretty easy.
 
 Cadabra2 is available as a module on the cluster and can be loaded using the following commands:
+
 ```bash
 $ module use /gpfs/group/dml129/default/nucci2/sw/modules
 $ module load cadabra/2.2.9
@@ -323,19 +354,45 @@ $ module load laynii/1.5.6
 Now the user should have their own LAYNII module!
 
 #
+### netCDF-c-base
+I built this installer to help users and groups install the most basic version of netCDF4 you can. There are a bajillion ways to configure netCDF, and this installer is as simple as you can get. There is no built-in support for Fortran or Java, just beautiful, pure C. This installation is perfect for anyone trying to install the R package [ncdf4](https://cran.r-project.org/web/packages/ncdf4/index.html). The installer will also automatically generate a module file. Not in the game of modifying users `.bashrc` files. To create the installer, use the following command:
+
+```bash
+$ tar -czvf netcdf-c-base_installer.tar.gz netcdf-c-base  #=> Clone installers directory
+```
+
+Please note that since I don't trust the internet (RHEL 6 repositories won't be around forever!) I put the appropriate dependencies in the `src` directory. Unfortunately, this does make the installer almost too large to send through email, so it might be better to host it in a shared folder (or FTP server!). However you get the installer out to the user, have them execute the following commands to install the basic netCDF:
+
+```bash
+$ tar -xzvf netcdf-c-base_installer.tar.gz
+$ cd netcdf-c-base
+$ chmod +x INSTALL
+$ ./INSTALL /path/to/desired/dir
+```
+
+Once the installer is finished, the user will be able to load the module using the following commands:
+
+```bash
+$ module use /path/to/desired/dir/modules
+$ module load netcdf/base-4.7.4
+```
+
+Now the user can compile their programs that only require the base netCDF!
+
+#
 ### R-4.0.2
 I built this installer to help users and groups install the newest version of R. R has a lot of dependencies, and this installer should take care of them. This installer is a little bit more involved since R is being installed in different locations. The neat thing that this installer does it automatically generate a module file, and it automatically detects if you have a prior R installation.
 
 You can construct the installer using the following command:
 
 ```bash
-$ tar -czvf R_4.0.2_installer.tar.gz R-4.0.2  #=> Clone installers directory
+$ tar -czvf R-4.0.2_installer.tar.gz R-4.0.2  #=> Clone installers directory
 ```
 
 Then, send the tar file to the user and have them execute the following commands:
 
 ```bash
-$ tar -xzvf R_4.0.2_installer.tar.gz
+$ tar -xzvf R-4.0.2_installer.tar.gz
 $ cd R-4.0.2
 $ chmod +x INSTALL
 $ ./INSTALL /path/to/desired/dir
@@ -349,6 +406,9 @@ $ module load r/4.0.2
 ```
 
 Now users can have the newest version of R!
+
+#### Update 8/9/2020
+The R installer now relies on `tar.gz` files stored in the `src` directory. I did this because the server that I would download the .rpm file from was very unweildy and not very dependable. Therefore, I modified the script to use files already stored on the cluster.
 
 # License
 This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html

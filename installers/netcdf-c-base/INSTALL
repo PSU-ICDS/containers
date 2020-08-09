@@ -1,0 +1,160 @@
+#!/bin/bash
+# $1 will hold the value of the desired
+# directory to install the base netcdf
+
+# Load gcc/7.3.1
+module load gcc/7.3.1
+
+# The directory the base netcdf is going to be installed under
+BASE=$1
+
+# The directory to contain all the netcdf dependencies, exec, etc.
+if [ ! -d ${BASE}/netcdf4 ]; then
+    mkdir -p ${BASE}/netcdf4
+    NETCDF_BASE=${BASE}/netcdf4
+else
+    mkdir -p ${BASE}/netcdf-4.7.4
+    NETCDF_BASE=${BASE}/netcdf-4.7.4
+fi
+
+mkdir -p ${NETCDF_BASE}/tmp
+NETCDF_TMP=${NETCDF_BASE}/tmp
+
+# Copy source files into tmp
+echo "Copying source files"
+cp ./src/curl-7.56.1.tar.bz2 ${NETCDF_TMP}/curl-7.56.1.tar.bz2
+cp ./src/hdf5-1.12.0.tar.gz ${NETCDF_TMP}/hdf5-1.12.0.tar.gz
+cp ./src/m4-latest.tar.gz ${NETCDF_TMP}/m4-latest.tar.gz
+cp ./src/netcdf-c-4.7.4.tar.gz ${NETCDF_TMP}/netcdf-c-4.7.4.tar.gz
+cp ./src/zlib-1.2.11.tar.gz ${NETCDF_TMP}/zlib-1.2.11.tar.gz
+
+# Extract tar files into "build" directory
+cd ${NETCDF_TMP}
+if [[ ! -f curl-7.56.1.tar.bz2 || ! -f hdf5-1.12.0.tar.gz || ! -f netcdf-c-4.7.4.tar.gz || ! -f zlib-1.2.11.tar.gz ]]; then
+    echo "Something went wrong trying to copy the source files"
+    echo "Please contact iask@ics.psu.edu for assistance"
+    exit
+else
+    mkdir -p ${NETCDF_TMP}/build
+    echo "Extracting and uncompressing source files"
+    tar -xjvf curl-7.56.1.tar.bz2 -C build
+    tar -xzvf hdf5-1.12.0.tar.gz -C build
+    tar -xzvf m4-latest.tar.gz -C build
+    tar -xzvf netcdf-c-4.7.4.tar.gz -C build
+    tar -xzvf zlib-1.2.11.tar.gz -C build
+fi
+
+# Build the source files, starting with zlib
+cd build
+echo "Building zlib"
+if [ -d zlib-1.2.11 ]; then
+    cd zlib-1.2.11
+    ./configure --prefix=${NETCDF_BASE}
+    make && make install
+else
+    echo "zlib failed to install"
+fi
+
+cd ..
+echo "Building curl"
+if [ -d curl-7.56.1 ]; then
+    cd curl-7.56.1
+    ./configure --prefix=${NETCDF_BASE} --without-libssh2
+    make && make install
+else
+    echo "curl failed to install"
+fi
+
+cd ..
+echo "Building m4"
+if [ -d m4-1.4.17 ]; then
+    cd m4-1.4.17
+    ./configure --prefix=${NETCDF_BASE}
+    make && make install
+else
+    echo "m4 failed to install"
+fi
+
+cd ..
+echo "Building hdf5"
+if [ -d hdf5-1.12.0 ]; then
+    cd hdf5-1.12.0
+    ./configure --with-zlib=${NETCDF_BASE} --prefix=${NETCDF_BASE}
+    make && make install
+else
+    echo "hdf5 failed to install"
+fi
+
+# Add m4 utility to the path
+export PATH=${NETCDF_BASE}/bin:${PATH}
+
+cd ..
+echo "Building netcdf4"
+if [ -d netcdf-c-4.7.4 ]; then
+    cd netcdf-c-4.7.4
+    CPPFLAGS=-I${NETCDF_BASE}/include LDFLAGS=-L${NETCDF_BASE}/lib ./configure --prefix=${NETCDF_BASE}
+    make && make install
+else
+    echo "netcdf4 failed to install"
+fi
+
+cd ${NETCDF_BASE}
+echo "Testing netCDF 4.7.4"
+if [ -x ./bin/nc-config ]; then
+    ./bin/nc-config --help
+    echo "netCDF 4.7.4 has been successfully installed"
+    echo "You can now use netCDF 4.7.4!"
+    echo -e "\nCleaning up!"
+    cd ${BASE}
+    rm -rf ${NETCDF_TMP}
+else
+    echo "netCDF failed to install correctly"
+fi
+
+echo -e "\nSetting up netCDF 4.7.4 module file"
+cd ${BASE}
+if [ ! -d ${BASE}/modules/netcdf ]; then
+    mkdir -p ${BASE}/modules/netcdf
+fi
+cd ${BASE}/modules/netcdf
+
+# Set module file as variable so that it
+# can be changed if install netCDF with
+# different configurations
+NETCDF_LUA_NAME=base-4.7.4
+NETCDF_LUA_FILE=base-4.7.4.lua
+touch ${NETCDF_LUA_FILE}
+
+echo "help([[NetCDF (network Common Data Form) is a set of software libraries and machine-independent data formats that support the creation, access, and sharing of array-oriented scientific data.]])" >> ${NETCDF_LUA_FILE}
+echo "whatis('Description: netCDF version 4.7.4')" >> ${NETCDF_LUA_FILE}
+echo "whatis('URL: https://www.unidata.ucar.edu/')" >> ${NETCDF_LUA_FILE}
+
+# Set up paths for module file
+NETCDF_ROOT="setenv(\"NETCDF\", \"${NETCDF_BASE}\")"
+NETCDF_PATH="prepend_path(\"PATH\", \"${NETCDF_BASE}/bin\")"
+NETCDF_LD_PATH="prepend_path(\"LD_LIBRARY_PATH\", \"${NETCDF_BASE}/lib\")"
+NETCDF_CPATH="prepend_path(\"CPATH\", \"${NETCDF_BASE}/include\")"
+NETCDF_C_IN="prepend_path(\"C_INCLUDE_PATH\", \"${NETCDF_BASE}/include\")"
+NETCDF_CPLUS_IN="prepend_path(\"CPLUS_INCLUDE_PATH\", \"${NETCDF_BASE}/include\")"
+NETCDF_LIB="prepend_path(\"LIBRARY_PATH\", \"${NETCDF_BASE}/lib\")"
+NETCDF_MAN="prepend_path(\"MANPATH\", \"${NETCDF_BASE}/share/man\")"
+NETCDF_INFO="prepend_path(\"INFOPATH\", \"${NETCDF_BASE}/share/info\")"
+
+echo ${NETCDF_ROOT} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_PATH} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_LD_PATH} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_CPATH} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_C_IN} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_CPLUS_IN} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_LIB} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_MAN} >> ${NETCDF_LUA_FILE}
+echo ${NETCDF_INFO} >> ${NETCDF_LUA_FILE}
+
+cd ${BASE}
+echo "Module file has been set up in ${BASE}/modules/netcdf/${NETCDF_LUA_FILE}"
+echo -e "\nTo use netCDF module, use the following commands in your terminal"
+echo -e "\nmodule use ${BASE}/modules"
+echo "module load netcdf/${NETCDF_LUA_NAME}"
+echo -e "\nShould you run into any issue please contact"
+echo "the i-ASK center at iask@ics.psu.edu for assistance"
+echo -e "\nAll done!"

@@ -27,6 +27,7 @@
 <h2 id="modules">Modules</h2>
 <p>A collection of modules that I have created for users. Written in lua for use with <a href="https://lmod.readthedocs.io/en/latest/">Lmod</a>. Please note that these have been configured for the specific situation of the user (i.e. don’t drag and drop module files). Modules are stored in the <code>/modules</code> directory. The list of available modules is as follows:</p>
 <ul>
+<li>Julia</li>
 <li>pandoc</li>
 <li>scripts</li>
 </ul>
@@ -45,6 +46,7 @@
 <p>This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:</p>
 <ul>
 <li>LAYNII</li>
+<li>netCDF-c-base</li>
 <li>R-4.0.2</li>
 </ul>
 <h1 id="how-to-use">How-to-Use</h1>
@@ -59,6 +61,7 @@
 </ul></li>
 <li><p>Modules</p>
 <ul>
+<li><a href="#julia">Julia</a></li>
 <li><a href="#pandoc">pandoc</a></li>
 <li><a href="#scripts">scripts</a></li>
 </ul></li>
@@ -75,6 +78,7 @@
 <li><p>Installers</p>
 <ul>
 <li><a href="#laynii">LAYNII</a></li>
+<li><a href="#netcdf-c-base">netCDF-c-base</a></li>
 <li><a href="#r-4.0.2">R-4.0.2</a></li>
 </ul></li>
 </ul>
@@ -134,12 +138,27 @@
 <h1 id="section-5"></h1>
 <h2 id="modules-1">Modules</h2>
 <h1 id="section-6"></h1>
+<h3 id="julia">Julia</h3>
+<p>Since Julia is being consistently updated by its developers I like to have the most recent version of it installed on the cluster. I do this so that users can utilize the bleeding-edge of Julia, and get access to the newest features. Since the are many different versions of Julia, I have the ones I have documented installing below:</p>
+<ul>
+<li><a href="#julia-1.4.2">Julia 1.4.2</a></li>
+<li><a href="#julia-1.5.0">Julia 1.5.0</a></li>
+</ul>
+<h4 id="julia-1.4.2">Julia 1.4.2</h4>
+<p>To load Julia 1.4.2, use the following commands:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">$ <span class="ex">module</span> load julia/1.4.2</a></code></pre></div>
+<h4 id="julia-1.5.0">Julia 1.5.0</h4>
+<p>To load Julia 1.5.0, use the following commands:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">$ <span class="ex">module</span> load julia/1.5.0</a></code></pre></div>
+<h1 id="section-7"></h1>
 <h3 id="pandoc">pandoc</h3>
 <p>Pandoc is great because it allows you to convert to many different markup languages. It is even a dependency for some popular packages, such as Rmarkdown. I now bring users the power to use this great tool with the following commands:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">$ <span class="ex">module</span> load pandoc</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">$ <span class="ex">module</span> load pandoc</a></code></pre></div>
 <p>To check that the module works, use the following command:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1">$ <span class="ex">pandoc</span> --version</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1">$ <span class="ex">pandoc</span> --version</a></code></pre></div>
 <p>You should see the following printed out to your command line:</p>
 <pre><code>pandoc 2.10
 Compiled with pandoc-types 1.21, texmath 0.12.0.2, skylighting 0.8.5
@@ -152,83 +171,98 @@ for a particular purpose.</code></pre>
 <p>To get more detailed information on pandoc you can visit their website here: https://pandoc.org/MANUAL.html #</p>
 <h3 id="scripts-2">scripts</h3>
 <p>This module is how to access the scripts I have written. Simply use the following commands to load the module:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/sw/modules</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">$ <span class="ex">module</span> load scripts</a></code></pre></div>
 <p>To see a list of available scripts you can use one of the following commands:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1">$ <span class="ex">module</span> help scripts</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="ex">module</span> help scripts</a></code></pre></div>
 <p>or</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">$ <span class="ex">scriptslist</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1">$ <span class="ex">scriptslist</span></a></code></pre></div>
 <p>If you are interested in writing your own shell scripts you can refer to this guide here: https://www.tutorialspoint.com/unix/shell_scripting.htm</p>
-<h1 id="section-7"></h1>
-<h2 id="singularity-definition-files-1">Singularity Definition Files</h2>
 <h1 id="section-8"></h1>
+<h2 id="singularity-definition-files-1">Singularity Definition Files</h2>
+<h1 id="section-9"></h1>
 <h3 id="cadabra2">Cadabra2</h3>
 <p>The Cadabra software is a field-theory motivated approach to computer algebra. Here it is installed inside a singularity container built upon Debian 9. I just host the definition file here but build the image is pretty easy.</p>
 <p>Cadabra2 is available as a module on the cluster and can be loaded using the following commands:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">$ <span class="ex">module</span> load cadabra/2.2.9</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">$ <span class="ex">module</span> load cadabra/2.2.9</a></code></pre></div>
 <p>To launch the Cadabra2 notebook you can use the following command:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1">$ <span class="ex">cadabra-gtk</span></a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1">$ <span class="ex">cadabra-gtk</span></a></code></pre></div>
 <p>To launch the Cadabra2 CLI you can use the following command:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1">$ <span class="ex">cadabra</span></a></code></pre></div>
-<h1 id="section-9"></h1>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1">$ <span class="ex">cadabra</span></a></code></pre></div>
+<h1 id="section-10"></h1>
 <h3 id="deeplearning-toolbox">Deeplearning Toolbox</h3>
 <p>The Deeplearing Toolbox is just a collection of python programs that are used for deep learning. You can find the likes of tensorflow, keras, and OpenCV2 installed inside of it. The definition file is just hosted here.</p>
 <p>The Deeplearning Toolbox is available as a module on the cluster, and it can be loaded using the following commands:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">$ <span class="ex">module</span> load python-deeplearning-toolbox/1.1</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">$ <span class="ex">module</span> load python-deeplearning-toolbox/1.1</a></code></pre></div>
 <p>To get a full list of what is installed inside the container simply use the following command:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1">$ <span class="ex">module</span> help python-deeplearning-toolbox/1.1</a></code></pre></div>
-<h1 id="section-10"></h1>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1">$ <span class="ex">module</span> help python-deeplearning-toolbox/1.1</a></code></pre></div>
+<h1 id="section-11"></h1>
 <h3 id="hic-pro">HiC-Pro</h3>
 <p>HiC-Pro is an optimized and flexible pipeline for Hi-C data processing. Luckily, this is an easy program to inside a container. The definition file is just hosted here.</p>
 <p>HiC-Pro is available as a module and can be loaded using the following commands:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">$ <span class="ex">module</span> load hicpro/2.11.4</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" data-line-number="1">$ <span class="ex">module</span> use /gpfs/group/dml129/default/nucci2/sw/modules</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">$ <span class="ex">module</span> load hicpro/2.11.4</a></code></pre></div>
 <p>Simply call the HiC-Pro executable to use it:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1">$ <span class="ex">HiC-Pro</span> <span class="op">&lt;</span>options<span class="op">&gt;</span> <span class="op">&lt;</span>arguments<span class="op">&gt;</span></a></code></pre></div>
-<h1 id="section-11"></h1>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" data-line-number="1">$ <span class="ex">HiC-Pro</span> <span class="op">&lt;</span>options<span class="op">&gt;</span> <span class="op">&lt;</span>arguments<span class="op">&gt;</span></a></code></pre></div>
+<h1 id="section-12"></h1>
 <h3 id="laynii-def">LAYNII-def</h3>
 <p>This is a package of standalone layer functional magnetic resonance imaging (layer-fMRI) C++ programs that depends only on a C++ compiler. The purpose of this package is to provide layer-analysis software that are not (yet) included in the other major MRI analysis software. This software was built into a container since it depends on a newer version of glibc. The definition file is just hosted in this repository.</p>
-<h1 id="section-12"></h1>
+<h1 id="section-13"></h1>
 <h3 id="libbi">Libbi</h3>
 <p>LibBi is used for state-space modelling and Bayesian inference on modern computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters. This is an image that I built for a user. Unfortunately it is not available as a module.</p>
-<h1 id="section-13"></h1>
+<h1 id="section-14"></h1>
 <h3 id="nlopt">NLopt</h3>
 <p>NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. This is another container that I built for a user. Unfortunately it is also not available to be used as a module.</p>
-<h1 id="section-14"></h1>
+<h1 id="section-15"></h1>
 <h3 id="rstudio-base">RStudio Base</h3>
 <p>RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio.</p>
-<h1 id="section-15"></h1>
-<h2 id="installers-1">Installers</h2>
 <h1 id="section-16"></h1>
+<h2 id="installers-1">Installers</h2>
+<h1 id="section-17"></h1>
 <h3 id="laynii">LAYNII</h3>
 <p>I built this installer to help users locally install LAYNII. The script does nothing fancy, but it does download my LAYNII container stored in the cloud and move the module file to its respective directory. This file can executed anywhere as all it depends on is the <code>${HOME}</code> bash environment variable.</p>
 <p>You can use the following instructions to construct the installer:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" data-line-number="1">$ <span class="fu">tar</span> -czvf LAYNII_installer.tar.gz LAYNII  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" data-line-number="1">$ <span class="fu">tar</span> -czvf LAYNII_installer.tar.gz LAYNII  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
 <p>Then, send the tar file to the user and have them execute the following commands:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf LAYNII_installer.tar.gz</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">$ <span class="bu">cd</span> LAYNII</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4">$ <span class="ex">./INSTALL</span></a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf LAYNII_installer.tar.gz</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">$ <span class="bu">cd</span> LAYNII</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">$ <span class="ex">./INSTALL</span></a></code></pre></div>
 <p>The user should then be able to access the module using the following commands:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" data-line-number="1">$ <span class="ex">module</span> use <span class="va">${HOME}</span>/sw/modules</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">$ <span class="ex">module</span> load laynii/1.5.6</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" data-line-number="1">$ <span class="ex">module</span> use <span class="va">${HOME}</span>/sw/modules</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">$ <span class="ex">module</span> load laynii/1.5.6</a></code></pre></div>
 <p>Now the user should have their own LAYNII module!</p>
-<h1 id="section-17"></h1>
+<h1 id="section-18"></h1>
+<h3 id="netcdf-c-base">netCDF-c-base</h3>
+<p>I built this installer to help users and groups install the most basic version of netCDF4 you can. There are a bajillion ways to configure netCDF, and this installer is as simple as you can get. There is no built-in support for Fortran or Java, just beautiful, pure C. This installation is perfect for anyone trying to install the R package <a href="https://cran.r-project.org/web/packages/ncdf4/index.html">ncdf4</a>. The installer will also automatically generate a module file. Not in the game of modifying users <code>.bashrc</code> files. To create the installer, use the following command:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" data-line-number="1">$ <span class="fu">tar</span> -czvf netcdf-c-base_installer.tar.gz netcdf-c-base  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<p>Please note that since I don’t trust the internet (RHEL 6 repositories won’t be around forever!) I put the appropriate dependencies in the <code>src</code> directory. Unfortunately, this does make the installer almost too large to send through email, so it might be better to host it in a shared folder (or FTP server!). However you get the installer out to the user, have them execute the following commands to install the basic netCDF:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf netcdf-c-base_installer.tar.gz</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">$ <span class="bu">cd</span> netcdf-c-base</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb28-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
+<p>Once the installer is finished, the user will be able to load the module using the following commands:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb29-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">$ <span class="ex">module</span> load netcdf/base-4.7.4</a></code></pre></div>
+<p>Now the user can compile their programs that only require the base netCDF!</p>
+<h1 id="section-19"></h1>
 <h3 id="r-4.0.2">R-4.0.2</h3>
 <p>I built this installer to help users and groups install the newest version of R. R has a lot of dependencies, and this installer should take care of them. This installer is a little bit more involved since R is being installed in different locations. The neat thing that this installer does it automatically generate a module file, and it automatically detects if you have a prior R installation.</p>
 <p>You can construct the installer using the following command:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" data-line-number="1">$ <span class="fu">tar</span> -czvf R_4.0.2_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" data-line-number="1">$ <span class="fu">tar</span> -czvf R-4.0.2_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
 <p>Then, send the tar file to the user and have them execute the following commands:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf R_4.0.2_installer.tar.gz</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">$ <span class="bu">cd</span> R-4.0.2</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf R-4.0.2_installer.tar.gz</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">$ <span class="bu">cd</span> R-4.0.2</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
 <p>This scipt will create the <code>modules</code> directory under the desired dir. To load the R module, use the following commands:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2">$ <span class="ex">module</span> load r/4.0.2</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">$ <span class="ex">module</span> load r/4.0.2</a></code></pre></div>
 <p>Now users can have the newest version of R!</p>
+<h4 id="update-892020">Update 8/9/2020</h4>
+<p>The R installer now relies on <code>tar.gz</code> files stored in the <code>src</code> directory. I did this because the server that I would download the .rpm file from was very unweildy and not very dependable. Therefore, I modified the script to use files already stored on the cluster.</p>
 <h1 id="license">License</h1>
 <p>This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html</p>
 <h1 id="troubleshooting">Troubleshooting</h1>
