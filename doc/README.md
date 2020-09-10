@@ -38,6 +38,7 @@ A collection of modules that I have created for users. Written in lua for use wi
 A collection of definition files that I have used to build containers needed by users using [Singularity](https://sylabs.io/). I prefer to host my images on [Sylabs Cloud](http://cloud.sylabs.io/home), but there are many other ways to host singularity images. Generally, I design the containers specifc to the individual user's needs, but sometimes I will use base images that I have built myself. For specific information on definition files please refer to the [how-to-use](#how-to-use) section of the documentation. The definiton files are stored in `/src/def`. The list of available definition files is as follows:
 
 * Cadabra2
+* calc-def
 * Deeplearning Toolbox
 * HiC-Pro
 * LAYNII-def
@@ -48,6 +49,7 @@ A collection of definition files that I have used to build containers needed by 
 ## Installers
 This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:
 
+* calc
 * LAYNII
 * netCDF-c-base
 * R-4.0.2
@@ -70,6 +72,7 @@ This is a collection of scripts that I send to users to help them locally instal
 * Singularity Definition Files
 
   * [Cadabra2](#cadabra2)
+  * [calc-def](#calc-def)
   * [Deeplearning Toolbox](#deeplearning-toolbox)
   * [HiC-Pro](#hic-pro)
   * [LAYNII-def](#laynii-def)
@@ -79,12 +82,13 @@ This is a collection of scripts that I send to users to help them locally instal
 
 * Installers
 
+  * [calc](#calc)
   * [LAYNII](#laynii)
   * [netCDF-c-base](#netcdf-c-base)
   * [R-4.0.2](#r-4.0.2)
 
 ## Scripts
-#
+
 ### collecter
 A collecter is someone who collects. Collecter is a simple script that collects info on the user's home directory. Produces a tar archive containing info on the users .bashrc, .bash_history, .bash_profile, .bash_aliases, directory size, etc. Pretty much helpful anytime a user is having issues with anything. With this script the user will need to use it, and then send the responding tech the tar file. Here are the commands you should send to the user:
 
@@ -172,7 +176,6 @@ $ setup_conda_symlink
 
 #
 ## Modules
-#
 
 ### Julia
 Since Julia is being consistently updated by its developers I like to have the most recent version of it installed on the cluster. I do this so that users can utilize the bleeding-edge of Julia, and get access to the newest features. Since the are many different versions of Julia, I have the ones I have documented installing below:
@@ -248,7 +251,6 @@ If you are interested in writing your own shell scripts you can refer to this gu
 
 #
 ## Singularity Definition Files
-#
 
 ### Cadabra2
 The Cadabra software is a field-theory motivated approach to computer algebra. Here it is installed inside a singularity container built upon Debian 9. I just host the definition file here but build the image is pretty easy.
@@ -271,6 +273,12 @@ To launch the Cadabra2 CLI you can use the following command:
 ```bash
 $ cadabra
 ```
+
+#
+### calc-def
+Calc is an interactive calculator which provides for easy large numeric calculations, but which also can be easily programmed for difficult or long calculations. It can accept a command line argument, in which case it executes that single command and exits. Otherwise, it enters interactive mode. In this mode, it accepts commands one at a time, processes them, and displays the answers. This is an interesting piece of software that I installed for a user. It is virtually the same as the Unix utility `bc`, but it has more features. However, unfortunately, the maintainers did not include support for the `PREFIX` build option in the Makefile. Therefore, I had to install it inside a singularity container.
+
+The container is primarily used for the [calc](#calc) installer. It is downloaded or copied in the script to the appropraite location, and is then setup as a loadable module.
 
 #
 ### Deeplearning Toolbox
@@ -324,8 +332,35 @@ RStudio is an integrated development environment (IDE) for R. It includes a cons
 
 #
 ## Installers
-#
 
+### calc
+I built this installer to help users locally install calc. This script does nothing fancy, but it does download my calc container stored in the cloud and move the module file to its respective directory. This file can executed anywhere as all it depends on is the `${HOME}` bash environment variable. The one major improvement however is that this installer can use a local copy of the calc container, instead of always having to download it from the cloud. Just package the container inside of the tar archive!
+
+You can use the following instructions to construct the installer:
+
+```bash
+$ tar -czvf calc_installer.tar.gz calc  #=> Clone installers directory
+```
+
+Then, send the tar file to the user and have them execute the following commands:
+
+```bash
+$ tar -xzvf calc_installer.tar.gz
+$ cd calc
+$ chmod +x INSTALL
+$ ./INSTALL
+```
+
+The user should then be able to access the module using the following commands:
+
+```bash
+$ module use ${HOME}/work/sw/modules
+$ module load calc/2.12.7.1
+```
+
+Now the user should have their own LAYNII module!
+
+#
 ### LAYNII
 I built this installer to help users locally install LAYNII. The script does nothing fancy, but it does download my LAYNII container stored in the cloud and move the module file to its respective directory. This file can executed anywhere as all it depends on is the `${HOME}` bash environment variable.
 
@@ -347,7 +382,7 @@ $ ./INSTALL
 The user should then be able to access the module using the following commands:
 
 ```bash
-$ module use ${HOME}/sw/modules
+$ module use ${HOME}/work/sw/modules
 $ module load laynii/1.5.6
 ```
 

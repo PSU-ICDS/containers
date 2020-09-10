@@ -1,0 +1,29 @@
+BootStrap: docker
+From: ubuntu:16.04
+
+%labels
+    Author: Jason C. Nucciarone
+    Maintainer: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: v1.0
+
+%post
+    apt-get update -y
+
+    ## Install the essentials
+    apt-get install build-essential wget libreadline6 less \
+        coreutils curl bsdmainutils -y
+
+    ## Download the calc source file
+    wget http://isthe.com/chongo/src/calc/calc-2.12.7.1.tar.bz2
+
+    ## Build calc
+    mkdir -p ${HOME}/tmp
+    tar -xjvf calc-2.12.7.1.tar.bz2 -C ${HOME}/tmp
+    cd ${HOME}/tmp/calc-2.12.7.1
+    make && make check && make install
+
+%help
+    If you have any questions or issues regarding
+    the use of this container then please contact
+    the ICDS-iASK center at iask@ics.psu.edu

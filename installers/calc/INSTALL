@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Retrieve container from Sylabs Cloud
+if [ ! -f calc_latest.sif ]; then
+    echo "Downloading calc"
+    $(command -v singularity) pull library://nucci/default/calc:latest
+fi
+
+# Create modules directory under sw
+if [ ! -d ${HOME}/work/sw/modules ]; then
+    mkdir -p ${HOME}/work/sw/modules
+fi
+
+# Create calc directory under software
+if [ ! -d ${HOME}/work/sw/calc ]; then
+    mkdir -p ${HOME}/work/sw/calc
+fi
+
+# Move container and module file to respective directories
+mkdir -p ${HOME}/work/sw/modules/calc
+cp 2.12.7.1.lua ${HOME}/work/sw/modules/calc/2.12.7.1.lua
+cp calc_latest.sif ${HOME}/work/sw/calc/calc_latest.sif
+
+# Adjust permissions accordingly
+chmod -R ug+rx ${HOME}/work/sw
+
+# Once the install is finished
+echo "Installation of the calc module has finished"
+echo -e "\nTo use calc, enter the following commands in your terminal:\n"
+echo "module use ${HOME}/work/sw/modules"
+echo "module load calc"
+echo -e "\nIf you run into any issues please contact Jason at iask@ics.psu.edu"
