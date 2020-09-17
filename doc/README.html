@@ -50,6 +50,7 @@
 <li>LAYNII</li>
 <li>netCDF-c-base</li>
 <li>R-4.0.2</li>
+<li>SQLite3</li>
 </ul>
 <h1 id="how-to-use">How-to-Use</h1>
 <ul>
@@ -84,6 +85,7 @@
 <li><a href="#laynii">LAYNII</a></li>
 <li><a href="#netcdf-c-base">netCDF-c-base</a></li>
 <li><a href="#r-4.0.2">R-4.0.2</a></li>
+<li><a href="#sqlite3">SQLite3</a></li>
 </ul></li>
 </ul>
 <h2 id="scripts-1">Scripts</h2>
@@ -281,6 +283,20 @@ for a particular purpose.</code></pre>
 <p>Now users can have the newest version of R!</p>
 <h4 id="update-892020">Update 8/9/2020</h4>
 <p>The R installer now relies on <code>tar.gz</code> files stored in the <code>src</code> directory. I did this because the server that I would download the .rpm file from was very unweildy and not very dependable. Therefore, I modified the script to use files already stored on the cluster.</p>
+<h1 id="section-18"></h1>
+<h3 id="sqlite3">SQLite3</h3>
+<p>Everyone loves databases, but sadly, databases don’t love ACI. Since we don’t have the allocatable resources to run databases, users can’t utilize technologies like MySQL and MariaDB. Oh the humanity! Whatever will we do? Well, I know. Use SQLite3! SQLite3 is my favorite DBMS because it is so versatile. Because I love it so much, I built an installer that users can use to install SQLite3 themselves!</p>
+<p>To create the installer, use the following commands:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" data-line-number="1">$ <span class="fu">tar</span> -czvf sqlite3_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<p>Then, send a copy to the user and have them execute the following commands:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf sqlite3_installer.tar.gz</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">$ <span class="bu">cd</span> sqlite3</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb37-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
+<p>This scipt will create the <code>modules</code> directory under the desired dir. To load the SQLite3 module, use the following commands:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb38-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">$ <span class="ex">module</span> load sqlite/3.33</a></code></pre></div>
+<p>Now users can execute structured queries to their hearts content!</p>
 <h1 id="license">License</h1>
 <p>This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html</p>
 <h1 id="troubleshooting">Troubleshooting</h1>

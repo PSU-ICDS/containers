@@ -53,6 +53,7 @@ This is a collection of scripts that I send to users to help them locally instal
 * LAYNII
 * netCDF-c-base
 * R-4.0.2
+* SQLite3
 
 # How-to-Use
 * Scripts
@@ -86,6 +87,7 @@ This is a collection of scripts that I send to users to help them locally instal
   * [LAYNII](#laynii)
   * [netCDF-c-base](#netcdf-c-base)
   * [R-4.0.2](#r-4.0.2)
+  * [SQLite3](#sqlite3)
 
 ## Scripts
 
@@ -444,6 +446,34 @@ Now users can have the newest version of R!
 
 #### Update 8/9/2020
 The R installer now relies on `tar.gz` files stored in the `src` directory. I did this because the server that I would download the .rpm file from was very unweildy and not very dependable. Therefore, I modified the script to use files already stored on the cluster.
+
+#
+### SQLite3
+Everyone loves databases, but sadly, databases don't love ACI. Since we don't have the allocatable resources to run databases, users can't utilize technologies like MySQL and MariaDB. Oh the humanity! Whatever will we do? Well, I know. Use SQLite3! SQLite3 is my favorite DBMS because it is so versatile. Because I love it so much, I built an installer that users can use to install SQLite3 themselves!
+
+To create the installer, use the following commands:
+
+```bash
+$ tar -czvf sqlite3_installer.tar.gz R-4.0.2  #=> Clone installers directory
+```
+
+Then, send a copy to the user and have them execute the following commands:
+
+```bash
+$ tar -xzvf sqlite3_installer.tar.gz
+$ cd sqlite3
+$ chmod +x INSTALL
+$ ./INSTALL /path/to/desired/dir
+```
+
+This scipt will create the `modules` directory under the desired dir. To load the SQLite3 module, use the following commands:
+
+```bash
+$ module use /path/to/desired/dir/modules
+$ module load sqlite/3.33
+```
+
+Now users can execute structured queries to their hearts content! 
 
 # License
 This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html
