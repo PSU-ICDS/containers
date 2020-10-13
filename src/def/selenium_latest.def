@@ -1,0 +1,72 @@
+BootStrap: docker
+From: debian:9
+
+%labels
+    Author: Jason C. Nucciarone
+    Maintainer: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: v1.0
+
+%post
+    ## Update repository list
+    apt-get update -y
+
+    ## Install my essentials
+    apt-get install build-essential wget curl file git libreadline7 \
+        gdebi-core locales-all moreutils -y
+
+    ## Graphical libraries needed to open on Roar
+    apt install libcanberra-gtk-module libcanberra-gtk3-module -y
+
+    ## Set language for firefox
+    export LC_ALL=en_US.utf8
+    export LANG=en_US.utf8
+
+    ## Install miniconda3
+    if [ ! -d /usr/local/miniconda ]; then
+       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+       	    -O ~/anaconda.sh && \
+	    bash ~/anaconda.sh -b -p /usr/local/miniconda && \
+	    rm ~/anaconda.sh
+    fi
+    
+    ## Initialize environment and update conda
+    export PATH=/usr/local/miniconda/bin:${PATH}
+    export LD_LIBRARY_PATH=/usr/local/miniconda/lib:${LD_LIBRARY_PATH}
+    conda update conda
+
+    ## Install firefox web browser
+    apt-get install firefox-esr -y
+
+    ## Install geckodriver
+    wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz \
+        -P /usr/bin
+    tar -xzvf /usr/bin/geckodriver-v0.27.0-linux64.tar.gz -C /usr/bin
+
+    ## Install user required conda pacakges
+    conda install -c conda-forge pandas -y
+    conda install -c conda-forge bs4 -y
+    conda install -c conda-forge selenium -y
+    conda install -c conda-forge joblib -y
+    conda install -c conda-forge notebook -y
+
+    ## Bind mounts for Roar
+    mkdir -p /storage/home
+    mkdir -p /storage/work
+    mkdir -p /gpfs/scratch
+    mkdir -p /gpfs/group
+    mkdir -p /var/spool/torque
+
+    ## Free up some space
+    conda clean --all -y
+
+%environment
+    export PATH=/usr/local/miniconda/bin:${PATH}
+    export LD_LIBRARY_PATH=/usr/local/miniconda/lib:${LD_LIBRARY_PATH}
+    export LC_ALL=en_US.utf8
+    export LANG=en_US.utf8
+
+%help
+    If you have any questions or issues regarding
+    the use of this container then please contact
+    the ICDS-iASK center at iask@ics.psu.edu

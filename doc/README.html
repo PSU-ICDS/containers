@@ -16,7 +16,8 @@
 <li><a href="#installers">Installers</a></li>
 </ul>
 <h2 id="scripts">Scripts</h2>
-<p>A collection of shell scripts that I use to help users. Most are written for bash, but I will look into supporting users that prefer to use non-bash shells such as tcsh. Scripts are stored in <code>/scripts</code>, and the executables are stored in <code>/scripts/bin</code>. For detailed use of each script please refer to the <a href="#how-to-use">how-to-use</a> section of the documentation. The list of available scripts is as follows: ### Bash</p>
+<p>A collection of shell scripts that I use to help users. Most are written for bash, but I will look into supporting users that prefer to use non-bash shells such as tcsh. Scripts are stored in <code>/scripts</code>, and the executables are stored in <code>/scripts/bin</code>. For detailed use of each script please refer to the <a href="#how-to-use">how-to-use</a> section of the documentation. The list of available scripts is as follows:</p>
+<h3 id="bash">Bash</h3>
 <ul>
 <li>collecter</li>
 <li>gathero</li>
@@ -42,6 +43,7 @@
 <li>Libbi</li>
 <li>NLopt</li>
 <li>RStudio Base</li>
+<li>Selenium</li>
 </ul>
 <h2 id="installers">Installers</h2>
 <p>This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:</p>
@@ -78,6 +80,7 @@
 <li><a href="#libbi">Libbi</a></li>
 <li><a href="#nlopt">NLopt</a></li>
 <li><a href="#rstudio-base">RStudio Base</a></li>
+<li><a href="#selenium">Selenium</a></li>
 </ul></li>
 <li><p>Installers</p>
 <ul>
@@ -226,76 +229,84 @@ for a particular purpose.</code></pre>
 <h3 id="rstudio-base">RStudio Base</h3>
 <p>RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio.</p>
 <h1 id="section-14"></h1>
+<h3 id="selenium">Selenium</h3>
+<p>Selenium is a suite of tools for automating web browsers. For this container, the web browser is Firefox ESR. I originally made this container for user so that they could collect data from a website that they were working on, but I thought that it would be cool to make the container available to all users on the cluster. Also, who doesn’t want a newer version of Firefox?</p>
+<p>In order to launch Firefox, use the following command:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" data-line-number="1">$ <span class="ex">singularity</span> exec --bind ~:/run selenium_latest.sif firefox-esr</a></code></pre></div>
+<p>I also installed jupyter notebook inside the container because it was the prefered development environment for the user. You can open jupyter notebook inside the container using the following command:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" data-line-number="1">$ <span class="ex">singularity</span> exec --bind ~:/run selenium_latest.sif jupyter notebook</a></code></pre></div>
+<p>Unfortunately, it is not available as a module, but the definition file is hosted here for safe keeping.</p>
+<h1 id="section-15"></h1>
 <h2 id="installers-1">Installers</h2>
 <h3 id="calc">calc</h3>
 <p>I built this installer to help users locally install calc. This script does nothing fancy, but it does download my calc container stored in the cloud and move the module file to its respective directory. This file can executed anywhere as all it depends on is the <code>${HOME}</code> bash environment variable. The one major improvement however is that this installer can use a local copy of the calc container, instead of always having to download it from the cloud. Just package the container inside of the tar archive!</p>
 <p>You can use the following instructions to construct the installer:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" data-line-number="1">$ <span class="fu">tar</span> -czvf calc_installer.tar.gz calc  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" data-line-number="1">$ <span class="fu">tar</span> -czvf calc_installer.tar.gz calc  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
 <p>Then, send the tar file to the user and have them execute the following commands:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf calc_installer.tar.gz</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">$ <span class="bu">cd</span> calc</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
-<a class="sourceLine" id="cb25-4" data-line-number="4">$ <span class="ex">./INSTALL</span></a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf calc_installer.tar.gz</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">$ <span class="bu">cd</span> calc</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">$ <span class="ex">./INSTALL</span></a></code></pre></div>
 <p>The user should then be able to access the module using the following commands:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" data-line-number="1">$ <span class="ex">module</span> use <span class="va">${HOME}</span>/work/sw/modules</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">$ <span class="ex">module</span> load calc/2.12.7.1</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" data-line-number="1">$ <span class="ex">module</span> use <span class="va">${HOME}</span>/work/sw/modules</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">$ <span class="ex">module</span> load calc/2.12.7.1</a></code></pre></div>
 <p>Now the user should have their own LAYNII module!</p>
-<h1 id="section-15"></h1>
+<h1 id="section-16"></h1>
 <h3 id="laynii">LAYNII</h3>
 <p>I built this installer to help users locally install LAYNII. The script does nothing fancy, but it does download my LAYNII container stored in the cloud and move the module file to its respective directory. This file can executed anywhere as all it depends on is the <code>${HOME}</code> bash environment variable.</p>
 <p>You can use the following instructions to construct the installer:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" data-line-number="1">$ <span class="fu">tar</span> -czvf LAYNII_installer.tar.gz LAYNII  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb29-1" data-line-number="1">$ <span class="fu">tar</span> -czvf LAYNII_installer.tar.gz LAYNII  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
 <p>Then, send the tar file to the user and have them execute the following commands:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf LAYNII_installer.tar.gz</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">$ <span class="bu">cd</span> LAYNII</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">$ <span class="ex">./INSTALL</span></a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf LAYNII_installer.tar.gz</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">$ <span class="bu">cd</span> LAYNII</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">$ <span class="ex">./INSTALL</span></a></code></pre></div>
 <p>The user should then be able to access the module using the following commands:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb29-1" data-line-number="1">$ <span class="ex">module</span> use <span class="va">${HOME}</span>/work/sw/modules</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">$ <span class="ex">module</span> load laynii/1.5.6</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" data-line-number="1">$ <span class="ex">module</span> use <span class="va">${HOME}</span>/work/sw/modules</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">$ <span class="ex">module</span> load laynii/1.5.6</a></code></pre></div>
 <p>Now the user should have their own LAYNII module!</p>
-<h1 id="section-16"></h1>
+<h1 id="section-17"></h1>
 <h3 id="netcdf-c-base">netCDF-c-base</h3>
 <p>I built this installer to help users and groups install the most basic version of netCDF4 you can. There are a bajillion ways to configure netCDF, and this installer is as simple as you can get. There is no built-in support for Fortran or Java, just beautiful, pure C. This installation is perfect for anyone trying to install the R package <a href="https://cran.r-project.org/web/packages/ncdf4/index.html">ncdf4</a>. The installer will also automatically generate a module file. Not in the game of modifying users <code>.bashrc</code> files. To create the installer, use the following command:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb30-1" data-line-number="1">$ <span class="fu">tar</span> -czvf netcdf-c-base_installer.tar.gz netcdf-c-base  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" data-line-number="1">$ <span class="fu">tar</span> -czvf netcdf-c-base_installer.tar.gz netcdf-c-base  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
 <p>Please note that since I don’t trust the internet (RHEL 6 repositories won’t be around forever!) I put the appropriate dependencies in the <code>src</code> directory. Unfortunately, this does make the installer almost too large to send through email, so it might be better to host it in a shared folder (or FTP server!). However you get the installer out to the user, have them execute the following commands to install the basic netCDF:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf netcdf-c-base_installer.tar.gz</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">$ <span class="bu">cd</span> netcdf-c-base</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf netcdf-c-base_installer.tar.gz</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">$ <span class="bu">cd</span> netcdf-c-base</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb33-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
 <p>Once the installer is finished, the user will be able to load the module using the following commands:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">$ <span class="ex">module</span> load netcdf/base-4.7.4</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb34-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">$ <span class="ex">module</span> load netcdf/base-4.7.4</a></code></pre></div>
 <p>Now the user can compile their programs that only require the base netCDF!</p>
-<h1 id="section-17"></h1>
+<h1 id="section-18"></h1>
 <h3 id="r-4.0.2">R-4.0.2</h3>
 <p>I built this installer to help users and groups install the newest version of R. R has a lot of dependencies, and this installer should take care of them. This installer is a little bit more involved since R is being installed in different locations. The neat thing that this installer does it automatically generate a module file, and it automatically detects if you have a prior R installation.</p>
 <p>You can construct the installer using the following command:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" data-line-number="1">$ <span class="fu">tar</span> -czvf R-4.0.2_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" data-line-number="1">$ <span class="fu">tar</span> -czvf R-4.0.2_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
 <p>Then, send the tar file to the user and have them execute the following commands:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb34-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf R-4.0.2_installer.tar.gz</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">$ <span class="bu">cd</span> R-4.0.2</a>
-<a class="sourceLine" id="cb34-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
-<a class="sourceLine" id="cb34-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf R-4.0.2_installer.tar.gz</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">$ <span class="bu">cd</span> R-4.0.2</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb36-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
 <p>This scipt will create the <code>modules</code> directory under the desired dir. To load the R module, use the following commands:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">$ <span class="ex">module</span> load r/4.0.2</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">$ <span class="ex">module</span> load r/4.0.2</a></code></pre></div>
 <p>Now users can have the newest version of R!</p>
 <h4 id="update-892020">Update 8/9/2020</h4>
 <p>The R installer now relies on <code>tar.gz</code> files stored in the <code>src</code> directory. I did this because the server that I would download the .rpm file from was very unweildy and not very dependable. Therefore, I modified the script to use files already stored on the cluster.</p>
-<h1 id="section-18"></h1>
+<h1 id="section-19"></h1>
 <h3 id="sqlite3">SQLite3</h3>
 <p>Everyone loves databases, but sadly, databases don’t love ACI. Since we don’t have the allocatable resources to run databases, users can’t utilize technologies like MySQL and MariaDB. Oh the humanity! Whatever will we do? Well, I know. Use SQLite3! SQLite3 is my favorite DBMS because it is so versatile. Because I love it so much, I built an installer that users can use to install SQLite3 themselves!</p>
 <p>To create the installer, use the following commands:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb36-1" data-line-number="1">$ <span class="fu">tar</span> -czvf sqlite3_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb38-1" data-line-number="1">$ <span class="fu">tar</span> -czvf sqlite3_installer.tar.gz R-4.0.2  #=<span class="op">&gt;</span> Clone installers directory</a></code></pre></div>
 <p>Then, send a copy to the user and have them execute the following commands:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf sqlite3_installer.tar.gz</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2">$ <span class="bu">cd</span> sqlite3</a>
-<a class="sourceLine" id="cb37-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
-<a class="sourceLine" id="cb37-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb39-1" data-line-number="1">$ <span class="fu">tar</span> -xzvf sqlite3_installer.tar.gz</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">$ <span class="bu">cd</span> sqlite3</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">$ <span class="fu">chmod</span> +x INSTALL</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4">$ <span class="ex">./INSTALL</span> /path/to/desired/dir</a></code></pre></div>
 <p>This scipt will create the <code>modules</code> directory under the desired dir. To load the SQLite3 module, use the following commands:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb38-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">$ <span class="ex">module</span> load sqlite/3.33</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb40-1" data-line-number="1">$ <span class="ex">module</span> use /path/to/desired/dir/modules</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">$ <span class="ex">module</span> load sqlite/3.33</a></code></pre></div>
 <p>Now users can execute structured queries to their hearts content!</p>
 <h1 id="license">License</h1>
 <p>This repository is licensed under the GNU General Public License v3.0. For more information on what this license entails, please feel free to visit https://www.gnu.org/licenses/gpl-3.0.en.html</p>
