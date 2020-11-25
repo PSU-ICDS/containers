@@ -1,16 +1,17 @@
 # Table of Contents
 
-* [Introduction](#introduction)
+* [Overview](#overview)
 * [What is here](#what-is-here)
 * [How-to-Use](#how-to-use)
 * [License](#license)
 * [Troubleshooting](#troubleshooting)
 
-# Introduction
+# Overview
 
-Welcome to my i-ASK repository where I store all the files
-that I have worked on. Here you can find my module files,
-various shell scripts, singularity images, etc.
+![license](https://img.shields.io/github/license/NucciTheBoss/i-ASK)
+![repo_size](https://img.shields.io/github/repo-size/NucciTheBoss/i-ASK)
+
+Greetings! Welcome to my i-ASK repository! This is where I store some of the generic code that I write for users, technicians, and researchers that work on the Roar supercomputer at [Penn State University](https://www.psu.edu/). You can find things like singularity containers, module files, installers, and utility scripts that I write here.
 
 # What is here
 
@@ -18,6 +19,7 @@ various shell scripts, singularity images, etc.
 * [Modules](#modules)
 * [Singularity Definition Files](#singularity-definition-files)
 * [Installers](#installers)
+* [Other Projects](#other-projects)
 
 ## Scripts
 
@@ -63,6 +65,14 @@ This is a collection of scripts that I send to users to help them locally instal
 * R-4.0.2
 * SQLite3
 
+## Other Projects
+
+This is just a collection of other repositories that I have worked on that pertain to the i-ASK center. These are usually just popular containers that I have made for applications that users have requested. Here is a list of the other repositories that I have made:
+
+* [eclipse_roar](https://github.com/NucciTheBoss/eclipse_roar)
+* [turboseti_roar](https://github.com/ics-i-ask-center/turboseti_roar)
+* [vscode_roar](https://github.com/NucciTheBoss/vscode_roar)
+
 # How-to-Use
 
 * Scripts
@@ -98,6 +108,12 @@ This is a collection of scripts that I send to users to help them locally instal
   * [netCDF-c-base](#netcdf-c-base)
   * [R-4.0.2](#r-4.0.2)
   * [SQLite3](#sqlite3)
+
+* Other Projects
+
+  * [eclipse_roar](#eclipse_roar)
+  * [turboseti_roar](#turboseti_roar)
+  * [vscode_roar](#vscode_roar)
 
 ## Scripts
 
@@ -532,7 +548,7 @@ Everyone loves databases, but sadly, databases don't love ACI. Since we don't ha
 To create the installer, use the following commands:
 
 ```bash
-$ tar -czvf sqlite3_installer.tar.gz R-4.0.2  #=> Clone installers directory
+$ tar -czvf sqlite3_installer.tar.gz sqlite3  #=> Clone installers directory
 ```
 
 Then, send a copy to the user and have them execute the following commands:
@@ -551,7 +567,24 @@ $ module use /path/to/desired/dir/modules
 $ module load sqlite/3.33
 ```
 
-Now users can execute structured queries to their hearts content! 
+Now users can execute structured queries to their hearts content!
+
+## Other Projects
+
+### eclipse_roar
+This is a container that I wrote for the popular Java IDE Eclipse. While I'm personally a bigger fan of InetlliJ IDEA, the one advantage Eclipse has is that it is free and open-source. A couple of users requested it so they could work on their Java code on the cluster. You can access the repository [here](https://github.com/NucciTheBoss/eclipse_roar).
+
+#
+
+### turboseti_roar
+This is a container that I wrote for the popular python and cli-app turboseti. I originally built this container so that I would not need to spend a bunch of time hunting down dependencies. You access the repository [here](https://github.com/ics-i-ask-center/turboseti_roar). 
+
+#
+
+### vscode_roar
+This is an updated container image that I wrote for the popular text editor vscode. I originally forked the repository from another technician that works in the i-ASK center, and I updated the vscode that was installed inside the container. You can access the version of my repository [here](https://github.com/NucciTheBoss/vscode_roar).
+
+#
 
 # License
 
