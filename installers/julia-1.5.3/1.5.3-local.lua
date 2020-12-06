@@ -8,7 +8,8 @@ whatis("Description: Julia is a high-performance dynamic programming language fo
 whatis("URL: http://julialang.org")
 whatis("Version: 1.5.3")
 
-local root = "${HOME}/work/sw/julia-1.5.3"
+local home = os.getenv("HOME")
+local root = string.format("%s/work/sw/julia-1.5.3", home)
 local juliaBin = pathJoin(root, "bin")
 local juliaLib = pathJoin(root, "lib")
 local juliaInclude = pathJoin(root, "include")

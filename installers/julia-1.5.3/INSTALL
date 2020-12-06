@@ -19,7 +19,7 @@ cp ./1.5.3-local.lua ${HOME}/work/sw/modules/julia/1.5.3-local.lua
 chmod -R ug+rx ${HOME}/work/sw/modules/julia
 
 # Once the install is finished
-echo "Installation of the julia 1.5.3 module has finished"
+echo -e "\nInstallation of the julia 1.5.3 module has finished"
 echo -e "\nTo use julia 1.5.3, enter the following commands in your terminal:\n"
 echo "module use ~/work/sw/modules"
 echo "module load julia/1.5.3-local"
