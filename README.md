@@ -60,6 +60,7 @@ A collection of definition files that I have used to build containers needed by 
 This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:
 
 * calc
+* julia-1.5.3
 * LAYNII
 * netCDF-c-base
 * R-4.0.2
@@ -104,6 +105,7 @@ This is just a collection of other repositories that I have worked on that perta
 * Installers
   
   * [calc](#calc)
+  * [julia-1.5.3](#julia-1.5.3)
   * [LAYNII](#laynii)
   * [netCDF-c-base](#netcdf-c-base)
   * [R-4.0.2](#r-4.0.2)
@@ -446,6 +448,39 @@ $ module load calc/2.12.7.1
 ```
 
 Now the user should have their own LAYNII module!
+
+#
+
+### julia-1.5.3
+I built this installer for julia 1.5.3 because `/gpfs/group/dml129` seems to be entering a state of flux. Therefore, I felt more comfortable building this installer so the user could have a local copy of julia 1.5.3. This way, whatever happens with `/gpfs/group/dml129` will not impact the user.
+
+You can use the following commands to create the julia 1.5.3 installer. **Note** that you will first need to download the julia 1.5.3 binary from [julialang.org](https://julialang.org/downloads/) first before constructing the installer. I did this because the `.tar.gz` file was too big to add to this git repository:
+
+```bash
+$ git clone https://github.com/NucciTheBoss/i-ASK.git
+$ cd i-ASK/installers
+$ mkdir -p julia-1.5.3/src
+$ wget https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-1.5.3-linux-x86_64.tar.gz -P julia-1.5.3/src
+$ tar -czvf julia_1.5.3_installer.tar.gz julia-1.5.3
+```
+
+Then, send the tar file to the user and have them execute the following commands:
+
+```bash
+$ tar -xzvf julia_1.5.3_installer.tar.gz
+$ cd julia-1.5.3
+$ chmod +x INSTALL
+$ ./INSTALL
+```
+
+The user should then be able to load julia-1.5.3 into their environment by using the following commands:
+
+```bash
+$ module use ${HOME}/work/sw/modules
+$ module load julia/1.5.3-local
+```
+
+Yay! Now the user has their own local copy of julia 1.5.3!
 
 #
 
