@@ -105,7 +105,7 @@ This is just a collection of other repositories that I have worked on that perta
 * Installers
   
   * [calc](#calc)
-  * [julia-1.5.3](#julia-1.5.3)
+  * [julia-1.5.3](#julia-153)
   * [LAYNII](#laynii)
   * [netCDF-c-base](#netcdf-c-base)
   * [R-4.0.2](#r-4.0.2)
@@ -223,8 +223,8 @@ $ setup_conda_symlink
 
 Since Julia is being consistently updated by its developers I like to have the most recent version of it installed on the cluster. I do this so that users can utilize the bleeding-edge of Julia, and get access to the newest features. Since the are many different versions of Julia, I have the ones I have documented installing below:
 
-* [Julia 1.4.2](#julia-1.4.2)
-* [Julia 1.5.0](#julia-1.5.0)
+* [Julia 1.4.2](#julia-142)
+* [Julia 1.5.0](#julia-150)
 
 #### Julia 1.4.2
 
