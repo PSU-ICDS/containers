@@ -47,6 +47,7 @@ A collection of definition files that I have used to build containers needed by 
 
 * Cadabra2
 * calc-def
+* CLIMB-def
 * Deeplearning Toolbox
 * HiC-Pro
 * LAYNII-def
@@ -60,6 +61,7 @@ A collection of definition files that I have used to build containers needed by 
 This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:
 
 * calc
+* CLIMB
 * julia-1.5.3
 * LAYNII
 * netCDF-c-base
@@ -94,6 +96,7 @@ This is just a collection of other repositories that I have worked on that perta
   
   * [Cadabra2](#cadabra2)
   * [calc-def](#calc-def)
+  * [CLIMB-def](#climb-def)
   * [Deeplearning Toolbox](#deeplearning-toolbox)
   * [HiC-Pro](#hic-pro)
   * [LAYNII-def](#laynii-def)
@@ -105,6 +108,7 @@ This is just a collection of other repositories that I have worked on that perta
 * Installers
   
   * [calc](#calc)
+  * [CLIMB](#climb)
   * [julia-1.5.3](#julia-153)
   * [LAYNII](#laynii)
   * [netCDF-c-base](#netcdf-c-base)
@@ -337,6 +341,13 @@ The container is primarily used for the [calc](#calc) installer. It is downloade
 
 #
 
+### CLIMB-def
+I built this singularity container in order to install Julia 1.0.5, R 3.6.3, tidyverse, and CLIMB in order to help users escape dependency hell. In this container, I ended up needing to build R 3.6.3 from source. Unfortunately, this container also isn't available on the cloud anywhere (it's application is too specific to justify using up my online storage space), so if you need a copy of this container then please email me at either jcn23@psu.edu or iask@ics.psu.edu.
+
+**IMPORTANT:** This container will only work on Roar's RHEL7 nodes. This container is built using Debian 11 (Bullseye) which is incompatible with our RHEL6 nodes.
+
+#
+
 ### Deeplearning Toolbox
 
 The Deeplearing Toolbox is just a collection of python programs that are used for deep learning. You can find the likes of tensorflow, keras, and OpenCV2 installed inside of it. The definition file is just hosted here.
@@ -448,6 +459,13 @@ $ module load calc/2.12.7.1
 ```
 
 Now the user should have their own LAYNII module!
+
+#
+
+### CLIMB
+I built this installer to set up the CLIMB container in a users work directory. Since my CLIMB container is not hosted on the cloud, you will need to contact me at either jcn23@psu.edu or iask@ics.psu.edu in order to get your hands on a copy of this installer.
+
+**IMPORTANT:** This installer will set up the CLIMB module in a directory named `sw7`. This is to indicate that that the module will only function properly on the RHEL7 nodes.
 
 #
 
