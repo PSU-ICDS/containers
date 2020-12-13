@@ -1,0 +1,140 @@
+Bootstrap: docker
+From: debian:bullseye
+
+%labels
+    Author: Jason C. Nucciarone
+    Maintainer: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: v1.0
+
+%files
+    src/julia-1.0.5-linux-x86_64.tar.gz /opt
+    src/lemon-1.3.1.tar.gz /opt
+    src/R-3.6.3.tar.gz /opt
+    src/bzip2-1.0.6.tar.gz /opt
+    src/xz-5.2.3.tar.bz2 /opt
+    src/curl-7.56.1.tar.bz2 /opt
+    src/pcre-8.41.tar.bz2 /opt
+
+%post
+    ## Update repository list
+    apt-get update -y
+    
+    ## Install my essentials
+    apt-get install build-essential wget file git libreadline8 \
+        locales-all moreutils parallel cmake libreadline-dev \
+        xorg-dev libboost-dev -y
+
+    ## Set up timezone
+    export TZ=America/New_York
+    ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
+    ## Set up language
+    export LC_ALL=en_US.utf8
+    export LANG=en_US.utf8
+
+    ## Install openmpi
+    apt-get install openmpi-bin libopenmpi-dev -y
+
+    ## Install packages needed for specific R packages
+    apt-get install libssl-dev libxml2-dev libgit2-dev libssh2-1-dev -y
+
+    ## Uncompress and install Julia
+    cd /opt
+
+    tar -xzvf julia-1.0.5-linux-x86_64.tar.gz
+    rm -rf julia-1.0.5-linux-x86_64.tar.gz
+
+    export JULIA_ROOT=/opt/julia-1.0.5
+    export PATH=${JULIA_ROOT}/bin:${PATH}
+    export LD_LIBRARY_PATH=${JULIA_ROOT}/lib:${LD_LIBRARY_PATH}
+    export CPATH=${JULIA_ROOT}/include:${CPATH}
+    export MANPATH=${JULIA_ROOT}/share/man:${MANPATH}
+
+    ## Uncompress and install bzip2-1.0.6
+    tar -xzvf bzip2-1.0.6.tar.gz
+    rm -rf bzip2-1.0.6.tar.gz
+
+    cd bzip2-1.0.6
+    make
+    make install
+    cd /opt
+
+    ## Uncompress and install xz-5.2.3
+    tar -xjvf xz-5.2.3.tar.bz2
+    rm -rf xz-5.2.3.tar.bz2
+
+    cd xz-5.2.3
+    ./configure
+    make
+    make install
+    cd /opt
+
+    ## Uncompress and install curl 7.56.1
+    tar -xjvf curl-7.56.1.tar.bz2
+    rm -rf curl-7.56.1.tar.bz2
+
+    cd curl-7.56.1
+    ./configure
+    make
+    make install
+    cd /opt
+
+    ## Uncompress and install pcre-8.41
+    tar -xjvf pcre-8.41.tar.bz2
+    rm -rf pcre-8.41.tar.bz2
+
+    cd pcre-8.41
+    ./configure --enable-utf8 --enable-unicode-properties
+    make
+    make install
+    cd /opt
+
+    ## Uncompress and install R 3.6.3
+    tar -xzvf R-3.6.3.tar.gz
+    rm -rf R-3.6.3.tar.gz
+    cd R-3.6.3
+    ./configure
+    make
+    make install
+    cd /opt
+
+    ## Uncompress and install lemon 1.3.1
+    tar -xzvf lemon-1.3.1.tar.gz
+    rm -rf lemon-1.3.1.tar.gz
+    cd lemon-1.3.1
+    mkdir build
+    cd build
+    cmake ..
+    make
+    make install
+    cd /opt
+
+    cd ${HOME}
+    
+    ## Install required R packages
+    Rscript -e 'install.packages("devtools" ,repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("RcppArmadillo" ,repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("tidyverse" ,repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'library(devtools); install_github("hillarykoch/CLIMB")'
+
+    ## Bind mounts for Roar
+    mkdir -p /storage/home
+    mkdir -p /storage/work
+    mkdir -p /gpfs/scratch
+    mkdir -p /gpfs/group
+    mkdir -p /var/spool/torque
+
+%environment
+    export JULIA_ROOT=/opt/julia-1.0.5 
+    export PATH=${JULIA_ROOT}/bin:${PATH} 
+    export LD_LIBRARY_PATH=${JULIA_ROOT}/lib:${LD_LIBRARY_PATH} 
+    export CPATH=${JULIA_ROOT}/include:${CPATH} 
+    export MANPATH=${JULIA_ROOT}/share/man:${MANPATH}
+    export LC_ALL=en_US.utf8
+    export LANG=en_US.utf8
+
+%help
+    If you have any questions or issues regarding
+    the use of this container then please contact
+    the ICDS-iASK center at iask@ics.psu.edu
