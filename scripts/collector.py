@@ -106,7 +106,7 @@ important_info = lambda x: colored(x, "blue", attrs=["bold"])
 @click.option("-v", "--version", is_flag=True, help="Print version info.")
 @click.option("--license", is_flag=True, help="Print licensing info.")
 @click.option("-c", "--compression", type=click.Choice(["gzip", "bz2", "xz", "tar", "zip"]),
-              case_sensitive=True, default="zip", help="Compression algorithm to use (default: zip).")
+              default="zip", help="Compression algorithm to use (default: zip).")
 @click.option("-d", "--directory", default="{}/scratch".format(home_env_var),
               help="Directory to save output to (default: ~/scratch).")
 def collector(version, license, compression, directory):
