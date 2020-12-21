@@ -275,19 +275,19 @@ def collector(version, license, compression, directory):
         os.chdir(full_path_to_dir)
         archive = Compression(output_dir, user_info)
 
-        if compression is "gzip":
+        if compression == "gzip":
             archive.togzip()
 
-        elif compression is "bz2":
+        elif compression == "bz2":
             archive.tobzip()
 
-        elif compression is "xz":
+        elif compression == "xz":
             archive.toxz()
 
-        elif compression is "tar":
+        elif compression == "tar":
             archive.totar()
 
-        elif compression is "zip":
+        elif compression == "zip":
             archive.tozip()
 
         else:
