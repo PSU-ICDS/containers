@@ -13,9 +13,10 @@ user_name = os.getenv('USER')
 
 
 class Compression:
-    def __init__(self, directory, user_info):
+    def __init__(self, directory, user_info, output_directory):
         self.directory = directory
         self.user_info = user_info
+        self.output_directory = output_directory
 
     def tozip(self):
         file_paths = self.__getallfilepaths()
@@ -82,7 +83,8 @@ class Compression:
     def complete(self):
         return important_info("Please go to Files > Home Directory from \n"
                               "https://portal.aci.ics.psu.edu/, download the created \n"
-                              "archive, and mail the archive to iask@ics.psu.edu")
+                              "archive located in {}, and mail the archive \n"
+                              "to iask@ics.psu.edu".format(self.output_directory))
 
 
 # Open file and write its output in the same directory
@@ -274,7 +276,7 @@ def collector(version, license, compression, directory):
         # Compress the $USER_info dir into an archive
         os.chdir(full_path_to_dir)
         compress_dir = output_dir.split("/")
-        archive = Compression(compress_dir[-1], user_info)
+        archive = Compression(compress_dir[-1], user_info, full_path_to_dir)
 
         if compression == "gzip":
             archive.togzip()
