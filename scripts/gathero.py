@@ -97,15 +97,20 @@ def gathero(version, license, job, name, compression, directory):
                       "at iask@ics.psu.edu if you need help.")
             exit()
 
+        job_list = []
         for jobs in job:
             try:
                 process = multiprocessing.Process(target=checkjob,
                                                   args=(checkjob_path, jobs, os.getcwd()))
+                job_list.append(process)
                 process.start()
 
             except multiprocessing.ProcessError:
                 print_bad("Something went wrong running checkjob. \n"
                           "Please contact i-ASK center for help!")
+
+        for job in job_list:
+            job.join()
 
         # Once checkjob has finished running
         print_good("All checkjobs have been successful!")
