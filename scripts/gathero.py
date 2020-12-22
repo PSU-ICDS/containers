@@ -34,7 +34,7 @@ def checkjob(checkjob_path, job_id, root_dir):
 @click.command()
 @click.option("-v", "--version", is_flag=True, help="Print version info.")
 @click.option("--license", is_flag=True, help="Print licensing info.")
-@click.option("job", default=None, nargs=-1, help="Job(s) to gather information on.")
+@click.argument("job", default=None, nargs=-1, help="Job(s) to gather information on.")
 @click.option("-n", "--name", default="gathero_output", help="Name of output directory and archive (default: "
                                                              "gathero_output).")
 @click.option("-c", "--compression", type=click.Choice(["gzip", "bz2", "xz", "tar", "zip"]),
