@@ -87,10 +87,10 @@ class Compression:
 
 # Open file and write its output in the same directory
 def readfile(path, filename):
-    fin = open(path, "wt")
+    fin = open(path, "rt")
     content = fin.read()
     fin.close()
-    fout = open(filename, "rt")
+    fout = open(filename, "wt")
     fout.write(content)
     fout.close()
 
