@@ -1,4 +1,5 @@
 import os
+import subprocess
 import shutil
 import glob
 import click
@@ -252,7 +253,7 @@ def collector(version, license, compression, directory):
             fout = open("{}/env_info-{}.txt".format(output_dir, user_name), "at")
             fout.write("\n\n#" + command + "\n\n")
             fout.close()
-            os.system("{} >> {}/env_info-{}.txt".format(command, output_dir, user_name))
+            subprocess.run("{} >> {}/env_info-{}.txt".format(command, output_dir, user_name))
             bar.next()
 
         bar.finish()
