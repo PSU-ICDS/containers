@@ -113,6 +113,7 @@ important_info = lambda x: colored(x, "blue", attrs=["bold"])
 @click.option("-d", "--directory", default="{}/scratch".format(home_env_var),
               help="Directory to save output to (default: ~/scratch).")
 def collector(version, license, compression, directory):
+    """collector: A simple script to collect information about your environment."""
     if version:
         click.echo("collector v1.1  Copyright (C) 2020  Jason C. Nucciarone \n\n"
                    "This program comes with ABSOLUTELY NO WARRANTY; \n"
