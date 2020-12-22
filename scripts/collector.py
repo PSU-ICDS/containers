@@ -20,7 +20,7 @@ class Compression:
 
     def tozip(self):
         file_paths = self.__getallfilepaths()
-        with ZipFile("{}.zip".format(self.user_info), "e") as zipfile:
+        with ZipFile("{}.zip".format(self.user_info), "w") as zipfile:
             bar = Bar("Compressing files into zip archive", max=len(file_paths))
             for file in file_paths:
                 zipfile.write(file)
