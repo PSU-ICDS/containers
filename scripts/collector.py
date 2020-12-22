@@ -7,7 +7,6 @@ import tarfile
 from zipfile import ZipFile
 from termcolor import cprint, colored
 
-
 # Global variables
 home_env_var = os.getenv('HOME')
 user_name = os.getenv('USER')
@@ -81,8 +80,9 @@ class Compression:
 
     @property
     def complete(self):
-        return important_info("Please go to Files > Home Directory from https://portal.aci.ics.psu.edu/ and download "
-                              "the created archive and mail the archive to iask@ics.psu.edu")
+        return important_info("Please go to Files > Home Directory from\n "
+                              "https://portal.aci.ics.psu.edu/, download the created\n "
+                              "archive, and mail the archive to iask@ics.psu.edu")
 
 
 # Open file and write its output in the same directory
@@ -273,7 +273,8 @@ def collector(version, license, compression, directory):
 
         # Compress the $USER_info dir into an archive
         os.chdir(full_path_to_dir)
-        archive = Compression(output_dir, user_info)
+        compress_dir = output_dir.split("/")
+        archive = Compression(compress_dir[-1], user_info)
 
         if compression == "gzip":
             archive.togzip()
