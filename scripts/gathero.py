@@ -46,9 +46,9 @@ def gathero(version, license, job, name, compression, directory):
     if version:
         click.echo("gathero v1.2  Copyright (C) 2020  Jason C. Nucciarone \n\n"
                    "This program comes with ABSOLUTELY NO WARRANTY; \n"
-                   "for more details type \"collector --license\". This is free software, \n"
+                   "for more details type \"gathero --license\". This is free software, \n"
                    "and you are welcome to redistribute it under certain conditions; \n"
-                   "type \"collector --license\" for more details.")
+                   "type \"gathero --license\" for more details.")
 
     elif license:
         click.echo("""gathero: A script to collect essential information about a user's job(s).\n
