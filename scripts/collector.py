@@ -80,8 +80,8 @@ class Compression:
 
     @property
     def complete(self):
-        return important_info("Please go to Files > Home Directory from\n "
-                              "https://portal.aci.ics.psu.edu/, download the created\n "
+        return important_info("Please go to Files > Home Directory from \n"
+                              "https://portal.aci.ics.psu.edu/, download the created \n"
                               "archive, and mail the archive to iask@ics.psu.edu")
 
 
@@ -235,10 +235,10 @@ def collector(version, license, compression, directory):
         # .zshrc
         if os.path.isfile("{}/{}".format(home_env_var, files_of_interest[9])):
             readfile("{}/{}".format(home_env_var, files_of_interest[9]), "zshrc-{}.txt".format(user_name))
-            print_good("Read .zshrc file at {}/{}".format(home_env_var, files_of_interest[9]))
+            print_good("Read .zshrc file at {}/{}\n".format(home_env_var, files_of_interest[9]))
 
         else:
-            print_info("Did not find any .zshrc file")
+            print_info("Did not find any .zshrc file\n")
 
         # Change into home directory and gather info about environment
         output_dir = os.getcwd()
@@ -248,7 +248,7 @@ def collector(version, license, compression, directory):
         bar = Bar("Collecting info on environment", max=len(commands))
         for command in commands:
             fout = open("{}/env_info-{}.txt".format(output_dir, user_name), "at")
-            fout.write("\n" + command + "\n")
+            fout.write("\n\n#" + command + "\n\n")
             fout.close()
             os.system("{} >> {}/env_info-{}.txt".format(command, output_dir, user_name))
             bar.next()
@@ -297,7 +297,7 @@ def collector(version, license, compression, directory):
             exit()
 
         # Wrap up and clean up
-        print(archive.complete)
+        print("\n" + archive.complete)
         shutil.rmtree(output_dir)
 
 
