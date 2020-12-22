@@ -253,7 +253,7 @@ def collector(version, license, compression, directory):
             fout = open("{}/env_info-{}.txt".format(output_dir, user_name), "at")
             fout.write("\n\n#" + command + "\n\n")
             fout.close()
-            subprocess.run("{} >> {}/env_info-{}.txt".format(command, output_dir, user_name))
+            subprocess.call("{} >> {}/env_info-{}.txt".format(command, output_dir, user_name), shell=True)
             bar.next()
 
         bar.finish()
