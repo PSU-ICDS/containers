@@ -127,7 +127,7 @@ $ module use /gpfs/group/dml129/default/sw/modules
 $ module load julia/1.5.0
 ```
 
-#
+---
 
 ### pandoc
 
@@ -158,7 +158,8 @@ for a particular purpose.
 ```
 
 To get more detailed information on pandoc you can visit their website here: https://pandoc.org/MANUAL.html
-#
+
+---
 
 ### scripts
 
@@ -182,8 +183,6 @@ $ scriptslist
 ```
 
 If you are interested in writing your own shell scripts you can refer to this guide here: https://www.tutorialspoint.com/unix/shell_scripting.htm
-
-#
 
 ## Singularity Definition Files
 
@@ -210,7 +209,7 @@ To launch the Cadabra2 CLI you can use the following command:
 $ cadabra
 ```
 
-#
+---
 
 ### calc-def
 
@@ -218,14 +217,14 @@ Calc is an interactive calculator which provides for easy large numeric calculat
 
 The container is primarily used for the [calc](#calc) installer. It is downloaded or copied in the script to the appropraite location, and is then setup as a loadable module.
 
-#
+---
 
 ### CLIMB-def
 I built this singularity container in order to install Julia 1.0.5, R 3.6.3, tidyverse, and CLIMB in order to help users escape dependency hell. In this container, I ended up needing to build R 3.6.3 from source. Unfortunately, this container also isn't available on the cloud anywhere (it's application is too specific to justify using up my online storage space), so if you need a copy of this container then please email me at either jcn23@psu.edu or iask@ics.psu.edu.
 
 **IMPORTANT:** This container will only work on Roar's RHEL7 nodes. This container is built using Debian 11 (Bullseye) which is incompatible with our RHEL6 nodes.
 
-#
+---
 
 ### Deeplearning Toolbox
 
@@ -244,7 +243,7 @@ To get a full list of what is installed inside the container simply use the foll
 $ module help python-deeplearning-toolbox/1.1
 ```
 
-#
+---
 
 ### HiC-Pro
 
@@ -263,31 +262,31 @@ Simply call the HiC-Pro executable to use it:
 $ HiC-Pro <options> <arguments>
 ```
 
-#
+---
 
 ### LAYNII-def
 
 This is a package of standalone layer functional magnetic resonance imaging (layer-fMRI) C++ programs that depends only on a C++ compiler. The purpose of this package is to provide layer-analysis software that are not (yet) included in the other major MRI analysis software. This software was built into a container since it depends on a newer version of glibc. The definition file is just hosted in this repository.
 
-#
+---
 
 ### Libbi
 
 LibBi is used for state-space modelling and Bayesian inference on modern computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters. This is an image that I built for a user. Unfortunately it is not available as a module.
 
-#
+---
 
 ### NLopt
 
 NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. This is another container that I built for a user. Unfortunately it is also not available to be used as a module.
 
-#
+---
 
 ### RStudio Base
 
 RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. I use this image as a bootstrap for other images that require R and RStudio.
 
-#
+---
 
 ### Selenium
 
@@ -306,8 +305,6 @@ $ singularity exec --bind ~:/run selenium_latest.sif jupyter notebook
 ```
 
 Unfortunately, it is not available as a module, but the definition file is hosted here for safe keeping.
-
-#
 
 ## Installers
 
@@ -339,14 +336,14 @@ $ module load calc/2.12.7.1
 
 Now the user should have their own LAYNII module!
 
-#
+---
 
 ### CLIMB
 I built this installer to set up the CLIMB container in a users work directory. Since my CLIMB container is not hosted on the cloud, you will need to contact me at either jcn23@psu.edu or iask@ics.psu.edu in order to get your hands on a copy of this installer.
 
 **IMPORTANT:** This installer will set up the CLIMB module in a directory named `sw7`. This is to indicate that that the module will only function properly on the RHEL7 nodes.
 
-#
+---
 
 ### julia-1.5.3
 I built this installer for julia 1.5.3 because `/gpfs/group/dml129` seems to be entering a state of flux. Therefore, I felt more comfortable building this installer so the user could have a local copy of julia 1.5.3. This way, whatever happens with `/gpfs/group/dml129` will not impact the user.
@@ -379,7 +376,7 @@ $ module load julia/1.5.3-local
 
 Yay! Now the user has their own local copy of julia 1.5.3!
 
-#
+---
 
 ### LAYNII
 
@@ -409,7 +406,7 @@ $ module load laynii/1.5.6
 
 Now the user should have their own LAYNII module!
 
-#
+---
 
 ### netCDF-c-base
 
@@ -437,7 +434,7 @@ $ module load netcdf/base-4.7.4
 
 Now the user can compile their programs that only require the base netCDF!
 
-#
+---
 
 ### R-4.0.2
 
@@ -471,7 +468,7 @@ Now users can have the newest version of R!
 
 The R installer now relies on `tar.gz` files stored in the `src` directory. I did this because the server that I would download the .rpm file from was very unweildy and not very dependable. Therefore, I modified the script to use files already stored on the cluster.
 
-#
+---
 
 ### SQLite3
 
@@ -506,17 +503,16 @@ Now users can execute structured queries to their hearts content!
 ### eclipse_roar
 This is a container that I wrote for the popular Java IDE Eclipse. While I'm personally a bigger fan of InetlliJ IDEA, the one advantage Eclipse has is that it is free and open-source. A couple of users requested it so they could work on their Java code on the cluster. You can access the repository [here](https://github.com/NucciTheBoss/eclipse_roar).
 
-#
+---
 
 ### turboseti_roar
 This is a container that I wrote for the popular python and cli-app turboseti. I originally built this container so that I would not need to spend a bunch of time hunting down dependencies. You access the repository [here](https://github.com/ics-i-ask-center/turboseti_roar). 
 
-#
+---
 
 ### vscode_roar
 This is an updated container image that I wrote for the popular text editor vscode. I originally forked the repository from another technician that works in the i-ASK center, and I updated the vscode that was installed inside the container. You can access the version of my repository [here](https://github.com/NucciTheBoss/vscode_roar).
 
-#
 
 # License
 
