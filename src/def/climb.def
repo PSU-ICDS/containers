@@ -5,7 +5,7 @@ From: debian:bullseye
     Author: Jason C. Nucciarone
     Maintainer: Jason C. Nucciarone
     Owner: Jason C. Nucciarone
-    Version: v1.0
+    Version: v1.1
 
 %files
     src/julia-1.0.5-linux-x86_64.tar.gz /opt
@@ -56,7 +56,7 @@ From: debian:bullseye
     rm -rf bzip2-1.0.6.tar.gz
 
     cd bzip2-1.0.6
-    make
+    make -f Makefile-libbz2_so
     make install
     cd /opt
 
@@ -94,7 +94,7 @@ From: debian:bullseye
     tar -xzvf R-3.6.3.tar.gz
     rm -rf R-3.6.3.tar.gz
     cd R-3.6.3
-    ./configure
+    ./configure --enable-R-shlib
     make
     make install
     cd /opt
@@ -113,10 +113,16 @@ From: debian:bullseye
     cd ${HOME}
     
     ## Install required R packages
-    Rscript -e 'install.packages("devtools" ,repos="http://lib.stat.cmu.edu/R/CRAN/")'
-    Rscript -e 'install.packages("RcppArmadillo" ,repos="http://lib.stat.cmu.edu/R/CRAN/")'
-    Rscript -e 'install.packages("tidyverse" ,repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("devtools", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("RcppArmadillo", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("tidyverse", repos="http://lib.stat.cmu.edu/R/CRAN/")'
     Rscript -e 'library(devtools); install_github("hillarykoch/CLIMB")'
+
+    ## Install RCall in julia
+    export R_ROOT=/usr/local/lib/R
+    export LD_LIBRARY_PATH=/usr/local/lib:${R_ROOT}/lib:${LD_LIBRARY_PATH}
+    export CPATH=${R_ROOT}/include:${CPATH}
+    julia -e 'using Pkg; Pkg.add("RCall")'
 
     ## Bind mounts for Roar
     mkdir -p /storage/home
@@ -126,10 +132,11 @@ From: debian:bullseye
     mkdir -p /var/spool/torque
 
 %environment
-    export JULIA_ROOT=/opt/julia-1.0.5 
+    export JULIA_ROOT=/opt/julia-1.0.5
+    export R_ROOT=/usr/local/lib/R 
     export PATH=${JULIA_ROOT}/bin:${PATH} 
-    export LD_LIBRARY_PATH=${JULIA_ROOT}/lib:${LD_LIBRARY_PATH} 
-    export CPATH=${JULIA_ROOT}/include:${CPATH} 
+    export LD_LIBRARY_PATH=/usr/local/lib:${JULIA_ROOT}/lib:${R_ROOT}/lib:${LD_LIBRARY_PATH} 
+    export CPATH=${JULIA_ROOT}/include:${R_ROOT}/include:${CPATH} 
     export MANPATH=${JULIA_ROOT}/share/man:${MANPATH}
     export LC_ALL=en_US.utf8
     export LANG=en_US.utf8
