@@ -1,0 +1,46 @@
+Bootstrap: docker
+From: nucci2/r-base-roar:4.0.3
+
+%labels
+    Author: Jason C. Nucciarone
+    Maintainer: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: v1.0
+
+%post
+    ## Update repository list
+    apt-get update -y
+
+    ## Install required libraries for esb5324
+    apt-get install libnlopt0 libnlopt-dev pandoc -y
+
+    ## Install required R packages for esb5324
+    Rscript -e 'install.packages("devtools", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("scLink", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("ggplot2", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("cowplot", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("ggpubr", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("parallel", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("matrixcalc", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("tictoc", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("dplyr", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("reshape2", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("bayestestR", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("VennDiagram", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("mvtnorm", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("igraph", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("rmarkdown", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'library(devtools); install_github("Yafei611/CFGL")'
+
+%environment
+    export R_ROOT=/usr/local/lib/R  
+    export LD_LIBRARY_PATH=/usr/local/lib:${R_ROOT}/lib:${LD_LIBRARY_PATH}
+    export LIBRARY_PATH=/usr/local/lib:${R_ROOT}/lib:${LIBRARY_PATH}
+    export CPATH=${R_ROOT}/include:${CPATH}
+    export LC_ALL=en_US.utf8
+    export LANG=en_US.utf8
+
+%help
+    If you have any questions or issues regarding
+    the use of this container then please contact
+    the ICDS-iASK center at iask@ics.psu.edu
