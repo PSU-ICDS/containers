@@ -46,7 +46,7 @@ A collection of definition files that I have used to build containers needed by 
 
 ## Dockerfiles
 
-A collection of Dockerfiles that I have written to serve as the base for some of my Singularity containers (primarily R). I use Docker sometimes for container builds because I think the build process is better. I also like to have the ability to create sandboxes with Docker containers. That being said, the list of available Dockerfiles is as follows:
+A collection of Dockerfiles that I have written to serve as the base for some of my Singularity containers (primarily R). I use Docker sometimes for container builds because I think the build process is better. I also like to have the ability to create sandboxes with Docker containers. The Dockerfiles are located in the `src/dockerfiles` directory of this repository. That being said, the list of available Dockerfiles is as follows:
 
 * r-base-roar-3.6.3
 * r-base-roar-4.0.3
