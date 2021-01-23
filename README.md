@@ -17,6 +17,7 @@ Greetings! Welcome to my i-ASK repository! This is where I store some of the gen
 
 * [Modules](#modules)
 * [Singularity Definition Files](#singularity-definition-files)
+* [Dockerfiles](#dockerfiles)
 * [Installers](#installers)
 * [Other Projects](#other-projects)
 
@@ -43,6 +44,14 @@ A collection of definition files that I have used to build containers needed by 
 * RStudio Base
 * Selenium
 
+## Dockerfiles
+
+A collection of Dockerfiles that I have written to serve as the base for some of my Singularity containers (primarily R). I use Docker sometimes for container builds because I think the build process is better. I also like to have the ability to create sandboxes with Docker containers. That being said, the list of available Dockerfiles is as follows:
+
+* r-base-roar-3.6.3
+* r-base-roar-4.0.3
+* r-rstudio-roar-4.0.3
+
 ## Installers
 
 This is a collection of scripts that I send to users to help them locally install software that they need for their research. Generally, they are written in bash, but sometimes I may use python to help with file management. These installers have dependencies, but they are usually packaged within the tar file or downloaded from the internet. The list of available installers is as follows:
@@ -62,6 +71,9 @@ This is just a collection of other repositories that I have worked on that perta
 * [eclipse_roar](https://github.com/NucciTheBoss/eclipse_roar)
 * [turboseti_roar](https://github.com/ics-i-ask-center/turboseti_roar)
 * [vscode_roar](https://github.com/NucciTheBoss/vscode_roar)
+* [openfoam_roar](https://github.com/NucciTheBoss/openfoam8_roar)
+* [petsc_roar](https://github.com/NucciTheBoss/petsc_roar)
+* [openpose_roar](https://github.com/NucciTheBoss/openpose_roar)
 
 # How-to-Use
 
@@ -84,6 +96,12 @@ This is just a collection of other repositories that I have worked on that perta
   * [RStudio Base](#rstudio-base)
   * [Selenium](#selenium)
 
+* Dockerfiles
+
+  * [r-base-roar-3.6.3](#r-base-roar-3.6.3)
+  * [r-base-roar-4.0.3](#r-base-roar-4.0.3)
+  * [r-rstudio-roar-4.0.3](#r-rstudio-roar-4.0.3)
+
 * Installers
   
   * [calc](#calc)
@@ -99,6 +117,9 @@ This is just a collection of other repositories that I have worked on that perta
   * [eclipse_roar](#eclipse_roar)
   * [turboseti_roar](#turboseti_roar)
   * [vscode_roar](#vscode_roar)
+  * [openfoam_roar](#openfoam_roar)
+  * [petsc_roar](#petsc_roar)
+  * [openpose_roar](#openpose_roar)
 
 ## Modules
 
@@ -306,6 +327,45 @@ $ singularity exec --bind ~:/run selenium_latest.sif jupyter notebook
 
 Unfortunately, it is not available as a module, but the definition file is hosted here for safe keeping.
 
+## Dockerfiles
+
+### r-base-roar-3.6.3
+
+This is a base image for Singularity containers that need to have R 3.6.3 installed. This Dockerfile uses Debian Bullseye as a base. Therefore, **this container will only work on RHEL7 nodes!** If you are interested in learning about this Dockerfile, please see my repository on Docker Hub: https://hub.docker.com/r/nucci2/r-base-roar
+
+In order to use an image of this Dockerfile as the base for a Singularity container, simply add the following lines to the top of your definition file:
+
+```bash
+Bootstrap: docker
+From: nucci2/r-base-roar:3.6.3
+```
+
+---
+
+### r-base-roar-4.0.3
+
+This is a base image for Singularity containers that need to have R 4.0.3 installed. This Dockerfile uses Debian Bullseye as a base. Therefore, **this container will only work on RHEL7 nodes!** If you are interested in learning about this Dockerfile, please see my repository on Docker Hub: https://hub.docker.com/r/nucci2/r-base-roar
+
+In order to use an image of this Dockerfile as the base for a Singularity container, simply add the following lines to the top of your definition file:
+
+```bash
+Bootstrap: docker
+From: nucci2/r-base-roar:4.0.3
+```
+
+---
+
+### r-rstudio-roar-4.0.3
+
+This is a base image for Singularity containers that need to have R 4.0.3 and RStudio installed. This Dockerfile uses Ubuntu 16.04 LTS as a base. Since this Dockerfile uses an older version of Ubuntu, it will work on Roar's RHEL6 and RHEL7 nodes. If you are interested in learning about this Dockerfile, please see my repository on Docker Hub: https://hub.docker.com/r/nucci2/r-4.0.3-rstudio
+
+In order to use an image of this Dockerfile as the base for a Singularity container, simply add the following lines to the top of your definition file:
+
+```bash
+Bootstrap: docker
+From: nucci2/r-4.0.3-rstudio:latest
+```
+
 ## Installers
 
 ### calc
@@ -501,17 +561,44 @@ Now users can execute structured queries to their hearts content!
 ## Other Projects
 
 ### eclipse_roar
+
 This is a container that I wrote for the popular Java IDE Eclipse. While I'm personally a bigger fan of InetlliJ IDEA, the one advantage Eclipse has is that it is free and open-source. A couple of users requested it so they could work on their Java code on the cluster. You can access the repository [here](https://github.com/NucciTheBoss/eclipse_roar).
 
 ---
 
 ### turboseti_roar
+
 This is a container that I wrote for the popular python and cli-app turboseti. I originally built this container so that I would not need to spend a bunch of time hunting down dependencies. You access the repository [here](https://github.com/ics-i-ask-center/turboseti_roar). 
 
 ---
 
 ### vscode_roar
+
 This is an updated container image that I wrote for the popular text editor vscode. I originally forked the repository from another technician that works in the i-ASK center, and I updated the vscode that was installed inside the container. You can access the version of my repository [here](https://github.com/NucciTheBoss/vscode_roar).
+
+---
+
+### openfoam_roar
+
+This is a repository that I made for install OpenFOAM 8 on the cluster. There are a lot of things going on in this repository, but I primarily use the [spack](https://spack.readthedocs.io/en/latest/) package manager to build OpenFOAM. I hate C++, but you can access the repository [here](https://github.com/NucciTheBoss/openfoam8_roar).
+
+**Also!** There is an official version of OpenFOAM available on the RHEL7 software stack that is maintained by me (the official repository is hosted on GitLab). You can load the module by using the following commands:
+
+```bash
+$ module use /gpfs/group/RISE/sw7/modules
+$ module load openfoam/v2012-gcc-8.3.1
+```
+
+---
+
+### petsc_roar
+
+This is a repository that is currently in progress, but I will have instructions for building [petsc](https://www.mcs.anl.gov/petsc/) from source on the cluster. You can access the repository [here](https://github.com/NucciTheBoss/petsc_roar).
+
+---
+
+### openpose_roar
+This repository is for installing OpenPose on Roar. Not a huge fan since it uses an outdated GPU framework, but hey, I regretably installed it anyways. You can access this repository [here](https://github.com/NucciTheBoss/openpose_roar).
 
 
 # License
