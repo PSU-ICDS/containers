@@ -1,7 +1,8 @@
 # Table of Contents
 
 * [Overview](#overview)
-* [What is here?](#what-is-here)
+* [Repository Structure](#repository-structure)
+* [Container List](#container-list)
 * [Bug Reporting and Requesting Features](#bug-reporting-and-requesting-features)
 * [Contributing Guidelines](#contributing-guidelines)
 * [License](#license)
@@ -9,11 +10,20 @@
 
 # Overview
 
-Welcome to ICDS's container collection! Here you can find the Docker and Singularity containers that are built by the community or by the techs that are members of the i-ASK Software Engineers team. This repository is hosted in the hopes that the traveling researcher or post-undergraduate student well find the container solution that the need for their workflow. If you have any questions, then please feel free to open an issue on this repository! If you are interested in adding more containers to this repository, keep reading! 
+![Demonstration](./share/gifs/demo.gif)
 
-# What is here?
+Welcome to the ICDS container collection! Here you can find the Docker and Singularity containers that are built by the community or by the techs that are members of the i-ASK Software Engineers team. This repository is hosted in the hopes that the traveling researcher or post-undergraduate student well find the container solution that the need for their workflow. If you have any questions, then please feel free to open an issue on this repository! If you are interested in adding more containers to this repository, keep reading! 
 
-If you haven't figured it out yet, the Singularity Definition Files (`.def`) are stored in the `/singularity` directory of this repository, and the Dockerfiles are stored in the `/docker` directory of this repository. Furthermore, the respective definition/Dockerfile is stored under the directory that alludes to its purpose. For example, a Dockerfile for R 3.6.3 will be stored as `/docker/r-base-3.6.3/Dockerfile`. Now onto all the goodies that we have stored here!
+# Repository Structure
+
+This is brief overview of where all the relevant files are stored in this repository:
+
+* **`/docker`** - Where all the Dockerfiles are stored.
+* **`/singularity`** - Where all the singularity definition files are stored.
+* **`/share/doc`** - Where the documentation to help you get started working with Singularity and Docker is stored.
+* **`/share/gifs`** - Where the gifs you see in this README are stored.
+
+# Container List
 
 ## Docker
 
