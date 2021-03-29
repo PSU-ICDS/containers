@@ -3,8 +3,8 @@
 * [Overview](#overview)
 * [Repository Structure](#repository-structure)
 * [Container List](#container-list)
-* [Bug Reporting and Requesting Features](#bug-reporting-and-requesting-features)
-* [Contributing Guidelines](#contributing-guidelines)
+* [Contributing](#contributing)
+* [Authors](#authors)
 * [License](#license)
 * [Troubleshooting](#troubleshooting)
 
@@ -24,6 +24,8 @@ This is brief overview of where all the relevant files are stored in this reposi
 * **`/share/gifs`** - Where the gifs you see in this README are stored.
 
 # Container List
+
+Now while you can find the more specific documentation for a container in the `/singularity` or `/docker` directories, here is a list of the containers currently available in this repository.
 
 ## Docker
 
@@ -48,37 +50,17 @@ Here is the list of Singularity Definition Files currently stored in this reposi
 * **rstudio** - an IDE for writing your R code and applications ([website](https://www.rstudio.com/)).
 * **selenium** - a browser automation tool ([website](https://www.selenium.dev/)).
 
-# Bug Reporting and Requesting Features
+# Contributing
 
-* [Reporting Bugs](#reporting-bugs)
-* [Requesting Features](#requesting-features)
+If you would like to contribute to this repository, such as adding a new container, make an update, open an issue, or even suggest an enhancement, then please read through this repository's CONTRIBUTING file for more info.
 
-## Reporting Bugs
+# Authors
 
-If you encounter any bugs or any *oddities* when working with the container source code stored in this collection, please open an issue on this repository. In that issue, please include the following sections:
-
-1. Which container are you using?
-2. What are you trying to accomplish?
-3. The stacktrace of the error you are receiving.
-
-The more information the better. We cannot fix the problem if we do not know how it is being caused. Also, when you open the issue, please label the issue as a **bug**.
-
-## Requesting Features
-
-If there is a new container you would like to see added to this collection, please open an issue on this repository. While we cannot promise that every requested container will be added, we will at least give it a look! Also, when requesting a feature as an issue, please label the issue as a **feature request** or **enhancement**.
-
-# Contributing Guidelines
-
-If you would like to help us add to the this container collection by either fixing issues, adding new containers, or updating the container to new versions, please create a fork of this repository. In that fork, create a branch that alludes to what you are trying to accomplish.
-
-After completing the work in your branch, please open a pull request to the main repository. In your pull request, please include the following things:
-
-1. What did you add/modify in your branch?
-2. Why did you make the addition/modification?
-
-Once again, the more information you include the better! Once we review the pull request, we will determine if it should be merged or not! If we say no, we will comment why.
+* Jason C. Nucciarone - NucciTheBoss - jcn23@psu.edu
 
 # License
+
+![License](https://img.shields.io/badge/license-MIT-brightgreen)
 
 This repository is licensed under the permisive MIT License. For more information on what this license entails, please feel free to visit https://en.wikipedia.org/wiki/MIT_License.
 
