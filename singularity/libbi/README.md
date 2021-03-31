@@ -17,7 +17,26 @@ $ sudo singularity build libbi.sif libbi.def
 
 While you can use the sylabs remote builder for this container, **it is not recommended**. LibBi takes quite a long time to compile, and it may go over the hour limit that you are given for your
 
-## [Instructions on how to interact with container]
+## How to interact with the LibBi container
+
+For this container, you would interact with it as if you are using any regular R Singularity container. Here are the commands that you can use to interact with the `R` and `Rscript` inside this container:
+
+```bash
+$ singularity exec libbi.sif R
+$ singularity exec libbi.sif Rscript
+```
+
+Also, by the request of the group that needed this container, RStudio was also installed inside this container. Here is the command that you can use to launch RStudio:
+
+```bash
+$ singularity exec libbi.sif rstudio
+```
+
+This container is also built to work with the Nvidia GPUs that are available on Roar. You enable Nvidia GPU support for this container by using the following command:
+
+```bash
+$ singularity exec --nv libbi.sif <your_command>
+```
 
 ## Authors
 
