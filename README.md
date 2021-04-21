@@ -31,6 +31,7 @@ Now while you can find the more specific documentation for a container in the `/
 
 Here is the list of Dockerfiles currently stored in this repository:
 
+* **lmod-8.4.3** - a container for testing module files using Lmod. Built on top of Fedora 33.
 * **r-base-3.6.3** - a basic container for R 3.6.3 built on top of Debian Bullseye.
 * **r-base-4.0.3** - a basic container for R 4.0.3 built on top of Debian Bullseye.
 * **rstudio** - a container with RStudio and R 4.0.3 installed together.
