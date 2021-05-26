@@ -1,0 +1,77 @@
+Bootstrap: docker
+From: debian:9
+
+%labels
+    Author: Jason C. Nucciarone
+    Maintainer: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: v2.0
+
+%pre
+    apt-get install debootstrap -y
+
+%post
+    ## Install needed java packages
+    apt-get update -y
+    apt-get install build-essential -y
+    apt-get install openjdk-8-jdk -y
+    apt-get install openjfx -y
+    apt-get install wget -y
+
+    ## Install Miniconda3 for package management
+    if [ ! -d /usr/local/anaconda ]; then
+       wget https://repo.continuum.io/miniconda/Miniconda3-4.5.4-Linux-x86_64.sh \
+            -O ~/anaconda.sh && \
+            bash ~/anaconda.sh -b -p /usr/local/anaconda && \
+            rm ~/anaconda.sh
+    fi
+    
+    ## Initialize Miniconda3
+    export PATH=$PATH:/usr/local/anaconda/bin
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/anaconda/lib
+    conda update conda
+    conda clean --packages -y
+    
+    ## Set up channels for pulling packages
+    conda config --add channels r
+    conda config --add channels defaults
+    conda config --add channels conda-forge
+    conda config --add channels bioconda
+    
+    ## Install R and necessary packages
+    conda install r-base -y
+    conda install r-rserve -y
+    conda install r-ptw -y
+    conda install r-gplots -y
+    conda install r-baseline -y
+    conda install r-ggplot2 -y
+    conda install r-boot -y
+    
+    ## Install package HyperSpec using R
+    R -e 'install.packages("hyperSpec", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    
+    ## Install BioConductor packages
+    conda install bioconductor-xcms -y
+    conda install bioconductor-camera -y
+    conda install bioconductor-process -y
+    
+    ## Install Netcdf libraries in /usr/local/anaconda/lib
+    conda install libnetcdf -y
+    
+    ## Clean up Miniconda3, shrink the container
+    conda clean --all -y
+    
+    ## Download netcdf-java .jar files to framework directory
+    mkdir -p /usr/local/framework
+    wget http://artifacts.unidata.ucar.edu/content/repositories/unidata-releases/edu/ucar/netcdfAll/5.3.2/netcdfAll-5.3.2.jar -P /usr/local/framework
+    wget http://artifacts.unidata.ucar.edu/content/repositories/unidata-releases/edu/ucar/toolsUI/5.3.2/toolsUI-5.3.2.jar -P /usr/local/framework
+    
+%environment
+    export PATH=$PATH:/usr/local/anaconda/bin
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/anaconda/lib
+    export CLASSPATH=/usr/local/framework/*.jar
+
+%help
+If you run into any issues with this container then
+please contact the ICDS i-ASK center at iask@ics.psu.edu
+

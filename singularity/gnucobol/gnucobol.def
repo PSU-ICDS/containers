@@ -1,0 +1,17 @@
+Bootstrap: docker
+From: debian:10
+
+%post
+# Install dependencies for GnuCOBOL
+apt-get update -y
+apt-get install gnucobol -y
+
+%labels
+Maintainer: Jason C. Nucciarone
+Author: Jason C. Nucciarone
+Owner: Jason C. Nucciarone
+Version: 0.0.1
+
+%help
+If you need help with this container, please contact the
+ICDS i-ASK center at iask@ics.psu.edu

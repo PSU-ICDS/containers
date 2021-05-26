@@ -1,0 +1,45 @@
+BootStrap: docker
+From: debian:9
+
+%labels
+    Author: Jason C. Nucciarone
+    Maintainer: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: v1.1
+    
+%post
+    apt-get update -y
+    apt-get install wget -y
+
+    # Install miniconda3
+    if [ ! -d /usr/local/miniconda ]; then
+       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+       	    -O ~/anaconda.sh && \
+	    bash ~/anaconda.sh -b -p /usr/local/miniconda && \
+	    rm ~/anaconda.sh
+    fi
+    
+    # Initialize environment and update conda
+    export PATH=/usr/local/miniconda/bin:${PATH}
+    export LD_LIBRARY_PATH=/usr/local/miniconda/lib:${LD_LIBRARY_PATH}
+    conda update conda
+    
+    # Add required channels
+    conda config --add channels conda-forge
+    
+    # Install keras
+    conda install keras -y
+    
+    # Run some clean up
+    conda clean --all -y
+    
+%environment
+    export PATH=/usr/local/miniconda/bin:${PATH}
+    export LD_LIBRARY_PATH=/usr/local/miniconda/lib:${LD_LIBRARY_PATH}
+    
+%help
+    If you run into issues regarding the
+    use of this container then please
+    contact the ICDS i-ASK center
+    at iask@ics.psu.edu
+    
