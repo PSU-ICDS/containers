@@ -44,9 +44,14 @@ Here is the list of Singularity Definition Files currently stored in this reposi
 * **calc** - C-style arbitrary precision calculator ([website](http://isthe.com/chongo/tech/comp/calc/index.html)).
 * **climb** - Composite Likelihood Empirical Bayes ([website](https://github.com/hillarykoch/CLIMB)).
 * **custom** - a hodgepodge of miscellanious but useful containers.
+* **fenics** - FEniCS is a popular open-source [(LGPLv3)](https://www.gnu.org/licenses/lgpl-3.0.en.html) computing platform for solving partial differential equations (PDEs). ([website](https://fenicsproject.org/)).
+* **gnucobol** - A free/libre COBOL compiler ([website](https://gnucobol.sourceforge.io/)).
+* **heasoft** - A Unified Release of the FTOOLS and XANADU Software Packages ([website](https://heasarc.gsfc.nasa.gov/lheasoft/))
 * **hicpro** - An optimized and flexible pipeline for Hi-C data processing ([website](https://github.com/nservant/HiC-Pro)).
+* **keras** - Keras is an API designed for human beings, not machines. Keras follows best practices for reducing cognitive load: it offers consistent & simple APIs, it minimizes the number of user actions required for common use cases, and it provides clear & actionable error messages ([website](https://keras.io/)).
 * **laynii** - Stand alone fMRI software suite for layer-fMRI analyses ([website](https://github.com/layerfMRI/LAYNII)).
 * **libbi** - LibBi is used for state-space modelling and Bayesian inference on high-performance computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters ([wesbite](https://libbi.org/index.html)).
+* **mzmine2** - An open-source software for mass-spectrometry data processing, with the main focus on LC-MS data ([website](https://mzmine.github.io/)).
 * **nlopt** - a free/open-source library for nonlinear optimization ([website](https://nlopt.readthedocs.io/en/latest/)).
 * **rstudio** - an IDE for writing your R code and applications ([website](https://www.rstudio.com/)).
 * **selenium** - a browser automation tool ([website](https://www.selenium.dev/)).
