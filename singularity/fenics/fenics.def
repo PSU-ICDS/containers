@@ -1,0 +1,31 @@
+Bootstrap: docker
+From: ubuntu:17.04
+
+%post
+    # Setup a very minimal bashrc file
+    mkdir -p /opt
+    echo 'PS1="Singularity \w> "' > /opt/bashrc
+
+    # SSH client is needed for OpenMPI
+    apt-get -y install ssh
+
+    # Install FEniCS
+    add-apt-repository ppa:fenics-packages/fenics
+    apt-get update
+    apt-get -y install python-numpy python-scipy python-matplotlib python-ipython ipython python-h5py
+    apt-get -y --no-install-recommends install fenics
+    apt-get -y -o Dpkg::Options::="--force-confold"  dist-upgrade
+
+    # Clean up
+    apt-get clean
+    rm -rf /tmp/* /var/tmp/*
+
+%runscript
+    echo "Welcome to the FEniCS Singularity container!"
+
+    # Disable annoying sudo message
+    touch ~/.sudo_as_admin_successful
+    
+    exec /bin/bash --rcfile /opt/bashrc "$@"
+
+

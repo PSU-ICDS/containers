@@ -1,0 +1,59 @@
+Bootstrap: docker
+From: scientificlinux/sl:7
+
+%files
+heasoft-6.26.1pc_linux64.tar.gz
+
+%environment
+# Direct HEASoft to the correct compilers during the runtime of the container
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
+export FC=/usr/bin/gfortran
+export PERL=/usr/bin/perl
+export PYTHON=/usr/bin/python
+export HEADAS=/heasoft-6.26.1/x86_64-pc-linux-gnu-libc2.17
+## Needs alias but that doesn't work here :(
+
+%post
+# Install dependences
+yum -y update
+yum -y install wget  # Needed for downloading HEASoft file
+yum -y install ncurses-devel
+yum -y install libcurl-devel
+yum -y install libXt-devel
+yum -y install readline-devel
+yum -y install gcc gcc-c++
+yum -y install gcc gcc-gfortran
+yum -y install perl-devel
+yum -y install perl-Env
+yum -y install perl-ExtUtils-MakeMaker
+yum -y install python-devel
+yum -y install make
+
+# Direct HEASoft to the correct compilers during buildtime
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
+export FC=/usr/bin/gfortran
+export PERL=/usr/bin/perl
+export PYTHON=/usr/bin/python
+
+# Install HEASoft
+tar -xzf heasoft-6.26.1pc_linux64.tar.gz
+cd heasoft-6.26.1/x86_64-pc-linux-gnu-libc2.17/BUILD_DIR
+./configure
+
+# Initialize HEADSoft
+export HEADAS=/heasoft-6.26.1/x86_64-pc-linux-gnu-libc2.17
+. $HEADAS/headas-init.sh
+
+# Install any niceties they wants
+yum -y install git
+
+%labels
+Author: Jason C. Nucciarone
+Maintainer: Jason C. Nucciarone
+Version: v0.0.1
+
+%help
+If you have any issues with the software in this container please
+contact the Penn State ICDS i-ASK center at iask@ics.psu.edu
