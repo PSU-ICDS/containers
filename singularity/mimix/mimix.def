@@ -59,9 +59,6 @@ From: r-base:4.1.2
   export INCLUDE=/opt/julia-1.6.5/include:$INCLUDE
   export CMAKE_PREFIX_PATH=/opt/julia-1.6.5:$CMAKE_PREFIX_PATH
   export CPATH=/opt/julia-1.6.5/lib:$CPATH
-  mkdir -p /opt/.julia
-  export JULIA_DEPOT_PATH=/opt/.julia
-  julia -e 'using Pkg; Pkg.add("StatsBase"); Pkg.add("DataFrames"); Pkg.add("Distributions"); Pkg.add("Mamba"); Pkg.add("YAML"); Pkg.add("RCall"); Pkg.add("CSV"); Pkg.add("ArgParse")'
 
   # Mount points for Roar
   mkdir -p /storage/home
@@ -73,8 +70,11 @@ From: r-base:4.1.2
   # Install MIMIX
   cd /opt
   git clone https://github.com/nsgrantham/mimix
-  cd mimix
-  julia -e 'using Pkg; Pkg.develop("MicrobiomeMixedModels.jl")'
+
+%runscript
+  julia -e 'using Pkg; Pkg.add("StatsBase"); Pkg.add("DataFrames"); Pkg.add("Distributions"); Pkg.add("Mamba"); Pkg.add("YAML"); Pkg.add("RCall"); Pkg.add("CSV"); Pkg.add("ArgParse")'
+  cd /opt/mimix
+  julia -e 'using Pkg; Pkg.develop(path="MicrobiomeMixedModels.jl")'
 
 %environment
   export LC_ALL=en_US.UTF-8
@@ -88,7 +88,6 @@ From: r-base:4.1.2
   export INCLUDE=/opt/julia-1.6.5/include:$INCLUDE
   export CMAKE_PREFIX_PATH=/opt/julia-1.6.5:$CMAKE_PREFIX_PATH
   export CPATH=/opt/julia-1.6.5/lib:$CPATH
-  export JULIA_DEPOT_PATH=/opt/.julia
   export XDG_RUNTIME_DIR=$HOME
 
 %test
