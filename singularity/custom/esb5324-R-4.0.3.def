@@ -12,7 +12,7 @@ From: nucci2/r-base-roar:4.0.3
     apt-get update -y
 
     ## Install required libraries for esb5324
-    apt-get install libnlopt0 libnlopt-dev pandoc -y
+    apt-get install libnlopt0 libnlopt-dev pandoc imagemagick libmagick++-dev -y
 
     ## Install required R packages for esb5324
     Rscript -e 'install.packages("devtools", repos="http://lib.stat.cmu.edu/R/CRAN/")'
@@ -30,6 +30,8 @@ From: nucci2/r-base-roar:4.0.3
     Rscript -e 'install.packages("mvtnorm", repos="http://lib.stat.cmu.edu/R/CRAN/")'
     Rscript -e 'install.packages("igraph", repos="http://lib.stat.cmu.edu/R/CRAN/")'
     Rscript -e 'install.packages("rmarkdown", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'install.packages("magick", repos="http://lib.stat.cmu.edu/R/CRAN/")'
+    Rscript -e 'library(devtools); install_github("olafmersmann/truncnorm")'
     Rscript -e 'library(devtools); install_github("Yafei611/CFGL")'
 
 %environment

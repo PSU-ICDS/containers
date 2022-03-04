@@ -1,0 +1,47 @@
+Bootstrap: docker
+From: continuumio/miniconda3:latest
+
+%labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+
+  apt-get update -y && apt-get install -y \
+    build-essential \
+    locales \
+    git \
+    wget \
+    curl
+
+  conda config --add channels conda-forge
+  conda config --add channels bioconda
+  conda update --update-all -y
+
+  # Install OrthoFinder
+  conda install orthofinder=2.5.4 -y
+
+  # Mount points for Roar
+  mkdir -p /storage/home
+  mkdir -p /storage/work
+  mkdir -p /gpfs/scratch
+  mkdir -p /gpfs/group
+  mkdir -p /var/spool/torque
+
+%environment
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+
+%test
+  cat /etc/os-release
+  python -v
+  orthofinder -h
+
+%help
+  This container is built to run OrthoFinder (https://github.com/davidemms/OrthoFinder).
+
+  If you encounter issues with this container, please submit a ticket with
+  the ICDS i-ASK center (https://iask.aci.ics.psu.edu).

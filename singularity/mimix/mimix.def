@@ -1,0 +1,102 @@
+Bootstrap: docker
+From: r-base:4.1.2
+
+%labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+
+  # Install core packages
+  apt-get update -y && apt-get install -y \
+    build-essential \
+    git \
+    wget \
+    curl \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    libssl-dev \
+    parallel \
+    firefox \
+    python3 \
+    python3-pip \
+    python3-dev \
+    gdebi-core \
+    locales \
+    x11-common \
+    xserver-xorg \
+    libcanberra-gtk3-module \
+    libcanberra-gtk-module
+
+  # Set up UTF-8 encoding
+  locale-gen en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+
+  # Install Jupyter Server
+  pip3 install --upgrade pip
+  pip install jupyter
+
+  # Install R libraries, irkernel, R kernel, and RStudio
+  Rscript -e 'install.packages(c("tidyverse", "vegan", "argparse", "xtable", "reshape2", "IRkernel"), repos="http://lib.stat.cmu.edu/R/CRAN/")'
+  wget https://download1.rstudio.org/desktop/bionic/amd64/rstudio-2021.09.2-382-amd64.deb
+  gdebi -n rstudio-2021.09.2-382-amd64.deb
+  rm -f rstudio-2021.09.2-382-amd64.deb
+
+  # Install Julia and dependent packages
+  wget https://julialang-s3.julialang.org/bin/linux/x64/1.6/julia-1.6.5-linux-x86_64.tar.gz
+  tar -xf julia-1.6.5-linux-x86_64.tar.gz -C /opt
+  rm -f julia-1.6.5-linux-x86_64.tar.gz
+  export LD_LIBRARY_PATH=/opt/julia-1.6.5/lib:$LD_LIBRARY_PATH 
+  export LIBRARY_PATH=/opt/julia-1.6.5/lib:$LIBRARY_PATH
+  export PATH=/opt/julia-1.6.5/bin:$PATH
+  export MANPATH=/opt/julia-1.6.5/share/man:$MANPATH
+  export C_INCLUDE_PATH=/opt/julia-1.6.5/include:$C_INCLUDE_PATH
+  export CPLUS_INCLUDE_PATH=/opt/julia-1.6.5/include:$CPLUS_INCLUDE_PATH
+  export INCLUDE=/opt/julia-1.6.5/include:$INCLUDE
+  export CMAKE_PREFIX_PATH=/opt/julia-1.6.5:$CMAKE_PREFIX_PATH
+  export CPATH=/opt/julia-1.6.5/lib:$CPATH
+
+  # Mount points for Roar
+  mkdir -p /storage/home
+  mkdir -p /storage/work
+  mkdir -p /gpfs/scratch
+  mkdir -p /gpfs/group
+  mkdir -p /var/spool/torque
+
+  # Install MIMIX
+  cd /opt
+  git clone https://github.com/nsgrantham/mimix
+
+%runscript
+  julia -e 'using Pkg; Pkg.add("StatsBase"); Pkg.add("DataFrames"); Pkg.add("Distributions"); Pkg.add("Mamba"); Pkg.add("YAML"); Pkg.add("RCall"); Pkg.add("CSV"); Pkg.add("ArgParse")'
+  cd /opt/mimix
+  julia -e 'using Pkg; Pkg.develop(path="MicrobiomeMixedModels.jl")'
+
+%environment
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  export LD_LIBRARY_PATH=/opt/julia-1.6.5/lib:$LD_LIBRARY_PATH  
+  export LIBRARY_PATH=/opt/julia-1.6.5/lib:$LIBRARY_PATH
+  export PATH=/opt/julia-1.6.5/bin:$PATH
+  export MANPATH=/opt/julia-1.6.5/share/man:$MANPATH
+  export C_INCLUDE_PATH=/opt/julia-1.6.5/include:$C_INCLUDE_PATH
+  export CPLUS_INCLUDE_PATH=/opt/julia-1.6.5/include:$CPLUS_INCLUDE_PATH
+  export INCLUDE=/opt/julia-1.6.5/include:$INCLUDE
+  export CMAKE_PREFIX_PATH=/opt/julia-1.6.5:$CMAKE_PREFIX_PATH
+  export CPATH=/opt/julia-1.6.5/lib:$CPATH
+  export XDG_RUNTIME_DIR=$HOME
+
+%test
+  R --version
+  julia --version
+  firefox --version
+
+%help
+  This container is built to run MIMIX (https://github.com/nsgrantham/mimix).
+
+  If you encounter issues with this container, please submit a ticket with
+  the ICDS i-ASK center (https://iask.aci.ics.psu.edu).

@@ -1,0 +1,61 @@
+Bootstrap: docker
+From: r-base:4.1.2
+
+%labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+
+  # Install core packages
+  apt-get update -y && apt-get install -y \
+    build-essential \
+    git \
+    wget \
+    curl \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    libssl-dev \
+    parallel \
+    firefox \
+    python3 \
+    python3-pip \
+    python3-dev \
+    gdebi-core \
+    locales \
+    x11-common \
+    xserver-xorg \
+    libcanberra-gtk3-module \
+    libcanberra-gtk-module \
+    libnlopt0 \
+    libnlopt-dev \
+    nlopt-doc
+
+  # Set up UTF-8 encoding
+  locale-gen en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+
+  # Install Jupyter Server
+  pip3 install --upgrade pip
+  pip install jupyter
+
+  # Install R libraries, irkernel, R kernel, and RStudio
+  Rscript -e 'install.packages(c("ggpubr", "ggstatsplot", "IRkernel"), repos="http://lib.stat.cmu.edu/R/CRAN/")'
+  wget https://download1.rstudio.org/desktop/bionic/amd64/rstudio-2021.09.2-382-amd64.deb
+  gdebi -n rstudio-2021.09.2-382-amd64.deb
+  rm -f rstudio-2021.09.2-382-amd64.deb
+
+%test
+  R --version
+  rstudio --version
+  firefox --version
+
+%help
+  This container is built to be run by user xuh142.
+
+  If you encounter issues with this container, please submit a ticket with
+  the ICDS i-ASK center (https://iask.aci.ics.psu.edu).

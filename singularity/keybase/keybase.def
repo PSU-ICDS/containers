@@ -1,0 +1,28 @@
+Bootstrap: docker
+From: ubuntu:20.04
+Includecmd: no
+
+%startscript
+    run_keybase -g
+
+%post
+    # Update repo list
+    apt-get update -y
+
+    # Install dependencies
+    apt-get install curl gdebi-core -y
+
+    # Install keybase
+    curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
+    gdebi -n ./keybase_amd64.deb && rm -rf ./keybase_amd64.deb
+
+%labels
+    Maintainer: Jason C. Nucciarone
+    Author: Jason C. Nucciarone
+    Owner: Jason C. Nucciarone
+    Version: 0.0.1
+
+%help
+    If you have any questions or issues regarding
+    the use of this container then please contact
+    the ICDS-iASK center at iask@ics.psu.edu
