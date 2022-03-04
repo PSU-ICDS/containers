@@ -1,0 +1,51 @@
+Bootstrap: docker
+From: python:latest
+
+%labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+
+  apt-get update -y && apt-get install -y \
+    locales \
+    git \
+    wget \
+    curl
+
+  # Set up UTF-8 encoding
+  locale-gen en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+
+  # Install OrthoFinder
+  wget https://github.com/davidemms/OrthoFinder/releases/download/2.5.4/OrthoFinder.tar.gz
+  tar -xzvf OrthoFinder.tar.gz -C /opt
+  python /opt/OrthoFinder/setup.py install
+  rm OrthoFinder.tar.gz
+
+  # Mount points for Roar
+  mkdir -p /storage/home
+  mkdir -p /storage/work
+  mkdir -p /gpfs/scratch
+  mkdir -p /gpfs/group
+  mkdir -p /var/spool/torque
+
+%environment
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  export PATH=/opt/OrthoFinder:$PATH
+
+%test
+  cat /etc/os-release
+  python -v
+  orthofinder -h
+
+%help
+  This container is built to run OrthoFinder (https://github.com/davidemms/OrthoFinder).
+
+  If you encounter issues with this container, please submit a ticket with
+  the ICDS i-ASK center (https://iask.aci.ics.psu.edu).
