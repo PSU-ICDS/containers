@@ -22,7 +22,7 @@ From: continuumio/miniconda3:latest
   conda update --update-all -y
 
   # Install OrthoFinder
-  conda install orthofinder=2.5.4
+  conda install orthofinder=2.5.4 -y
 
   # Mount points for Roar
   mkdir -p /storage/home
