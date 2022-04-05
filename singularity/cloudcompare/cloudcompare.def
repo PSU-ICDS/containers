@@ -1,0 +1,134 @@
+Bootstrap: docker
+From: nvidia/opengl:1.2-glvnd-devel
+
+%labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
+
+%runscript
+  CloudCompare
+
+%files
+  /etc/default/keyboard /etc/default/keyboard
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+
+  TZ=Etc/UTC && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+  
+  apt update -y
+  apt install -y \
+    locales \
+    git \
+    nano \
+    wget \
+    cmake \
+    build-essential \
+    ninja-build \
+    libqt5svg5-dev \
+    libqt5opengl5-dev \
+    qt5-default \
+    qttools5-dev \
+    qttools5-dev-tools \
+    libqt5websockets5-dev \
+    libtbb-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    libavutil-dev \
+    libswscale-dev \
+    libboost-program-options-dev \
+    libboost-thread-dev \
+    libeigen3-dev \
+    libcgal-dev \
+    libcgal-qt5-dev \
+    libgdal-dev \
+    libpcl-dev \
+    libdlib-dev \
+    libproj-dev \
+    libxerces-c-dev \
+    xvfb \
+    libpdal-dev \
+    libjsoncpp-dev
+
+  locale-gen en_US.UTF-8
+  export LC_ALL=en_US.UTF-8 && \
+    echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+  export LANG=en_US.UTF-8 && \
+    echo "LANG=en_US.UTF-8" >> /etc/environment
+
+  cd $SINGULARITY_ROOTFS && \
+    git clone --recursive https://github.com/cloudcompare/CloudCompare.git && \
+    mkdir -p CloudCompare/build && \
+    cd CloudCompare/build
+
+  cmake \
+    -B . \
+    -S .. \
+    -G Ninja \
+    -DEIGEN_ROOT_DIR=/usr/include/eigen3 \
+    -DJSON_ROOT_DIR=/usr/include/jsoncpp \
+    -DDLIB_ROOT=/usr/include \
+    -DCCCORELIB_SCALAR_DOUBLE=ON \
+    -DCCCORELIB_USE_TBB=ON \
+    -DPLUGIN_EXAMPLE_GL=ON \
+    -DPLUGIN_EXAMPLE_IO=ON \
+    -DPLUGIN_EXAMPLE_STANDARD=ON \
+    -DPLUGIN_GL_QEDL=ON \
+    -DPLUGIN_GL_QSSAO=ON \
+    -DPLUGIN_IO_QADDITIONAL=ON \
+    -DPLUGIN_IO_QCORE=ON \
+    -DPLUGIN_IO_QE57=ON \
+    -DPLUGIN_IO_QPHOTOSCAN=ON \
+    -DPLUGIN_IO_QPDAL=ON \
+    -DPLUGIN_IO_QRDB=ON \
+    -DPLUGIN_IO_QRDB_FETCH_DEPENDENCY=ON \
+    -DPLUGIN_IO_QRDB_INSTALL_DEPENDENCY=ON \
+    -DPLUGIN_STANDARD_QANIMATION=ON \
+    -DQANIMATION_WITH_FFMPEG_SUPPORT=ON \
+    -DPLUGIN_STANDARD_QBROOM=ON \
+    -DPLUGIN_STANDARD_QCANUPO=ON \
+    -DPLUGIN_STANDARD_QCOMPASS=ON \
+    -DPLUGIN_STANDARD_QCSF=ON \
+    -DPLUGIN_STANDARD_QFACETS=ON \
+    -DPLUGIN_STANDARD_QHOUGH_NORMALS=ON \
+    -DPLUGIN_STANDARD_QHPR=ON \
+    -DPLUGIN_STANDARD_QM3C2=ON \
+    -DPLUGIN_STANDARD_QPCV=ON \
+    -DPLUGIN_STANDARD_QPOISSON_RECON=ON \
+    -DPLUGIN_STANDARD_QSRA=ON \
+    -DPLUGIN_STANDARD_QRANSAC_SD=ON \
+    -DPLUGIN_STANDARD_QPCL=ON \
+    -DPLUGIN_STANDARD_QCLOUDLAYERS=ON \
+    -DBUILD_TESTING=ON
+
+  cmake --build . --parallel
+  cmake --install .
+
+  mkdir -p /storage/home
+  mkdir -p /storage/work
+  mkdir -p /gpfs/scratch
+  mkdir -p /gpfs/group
+  mkdir -p /var/spool/torque
+
+  cd $SINGULARITY_ROOTFS && \
+    rm -rf CloudCompare
+
+  # Remove ABI specifying minimum kernel version
+  # See URL: https://bugs.archlinux.org/task/61130
+  # Kernel on Roar may be too old for the minimum version specified by Qt5
+  strip --remove-section=.note.ABI-tag /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.12.8
+
+%environment
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  export XDG_RUNTIME_DIR=$HOME/.local
+
+%help
+  This container is built to run the CloudCompare software.
+
+  If you encounter issues with this container, please submit a ticket with
+  the ICDS i-ASK center (https://iask.aci.ics.psu.edu).

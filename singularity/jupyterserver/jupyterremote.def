@@ -1,0 +1,75 @@
+Bootstrap: docker
+From: continuumio/miniconda3:latest
+
+%labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
+
+%runscript
+  jupyter lab --no-browser --port=8888
+
+%files
+  /etc/default/keyboard /etc/default/keyboard
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+
+  TZ=Etc/UTC && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+
+  apt update -y
+  apt install -y \
+    build-essential \
+    firefox-esr \
+    locales \
+    git \
+    wget \
+    curl \
+    nano
+
+  locale-gen en_US.UTF-8
+  export LC_ALL=en_US.UTF-8 && \
+    echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+  export LANG=en_US.UTF-8 && \
+    echo "LANG=en_US.UTF-8" >> /etc/environment
+  conda config --add channels conda-forge
+  conda update --update-all -y
+
+  conda install -y \
+    numpy \
+    xarray \
+    dask \
+    pop-tools \
+    xgcm \
+    matplotlib \
+    cftime \
+    tqdm \
+    jupyter \
+    jupyterlab
+
+  mkdir -p /storage/home
+  mkdir -p /storage/work
+  mkdir -p /gpfs/scratch
+  mkdir -p /gpfs/group
+  mkdir -p /var/spool/torque
+
+%environment
+  export LC_ALL=en_US.UTF-8
+  export LANG=en_US.UTF-8
+  export XDG_RUNTIME_DIR=$HOME/.local
+
+%test
+  python --version
+  firefox --version
+
+%help
+  This container is meant to run Jupyter with
+  access to more computational resources. To bind
+  your interactive job with your interactive desktop,
+  please use the following command:
+
+  ssh -N -f -L localhost:8889:localhost:8888 <user_id>@<node_hostname>
+  
