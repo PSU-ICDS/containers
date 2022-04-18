@@ -1,0 +1,10 @@
+Bootstrap: docker
+From: nvidia/opengl:1.2-glvnd-devel
+
+%labels
+
+%files
+
+%post
+
+%help
