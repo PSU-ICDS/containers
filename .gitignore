@@ -1,1 +1,6 @@
+# Singularity/Apptainer specific
 *.sif
+
+# Distributed packages
+*.gz
+*.bz2

@@ -2,9 +2,46 @@ Bootstrap: docker
 From: nvidia/opengl:1.2-glvnd-devel
 
 %labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
 
 %files
+  /etc/default/keyboard /etc/default/keyboard
+  dx-4.4.4.tar.gz /opt/dx-4.4.4.tar.gz
+  rings-dx-v1.3.4.tar.bz2 /opt/rings-dx-v1.3.4.tar.bz2
 
 %post
+  export DEBIAN_FRONTEND=noninteractive
+
+  TZ=Etc/UTC && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+
+  apt update -y
+  apt install -y \
+    locales \
+    git \
+    nano \
+    build-essential \
+    gfortran \
+    x-window-system \
+    libhdf5-dev \
+    libtiff-dev \
+    imagemagick \
+    libnetcdf \
+    openjdk-11-jdk \
+    libjcdf-java \
+    mpich \
+    libmpich-dev \
+    libmotif-common \
+    libmotif-dev
+
+  # TODO: Install OpenDX
+  # TODO: Install RINGS
+  # TODO: Test application on Roar
 
 %help
+  This container is meant to run both RINGS
+  software and OpenDX.
