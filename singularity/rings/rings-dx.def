@@ -1,0 +1,74 @@
+Bootstrap: docker
+From: nvidia/opengl:1.2-glvnd-devel
+
+%labels
+  Author: Jason C. Nucciarone
+  Maintainer: Jason C. Nucciarone
+  Owner: Jason C. Nucciarone
+  Version: 1.0.0
+
+%files
+  /etc/default/keyboard /etc/default/keyboard
+  automake-1.15.1.tar.gz /opt/automake-1.15.1.tar.gz
+  rings-dx-v1.3.4.tar.bz2 /opt/rings-dx-v1.3.4.tar.bz2
+
+%post
+  export DEBIAN_FRONTEND=noninteractive
+
+  TZ=Etc/UTC && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+
+  apt update -y
+  apt install -y \
+    locales \
+    git \
+    nano \
+    autoconf \
+    bison \
+    byacc \
+    build-essential \
+    gfortran \
+    flex \
+    xorg \
+    dx \
+    libxpm-dev \
+    libhdf4-dev \
+    libhdf5-dev \
+    libtiff-dev \
+    imagemagick \
+    libmagickcore-6-headers \
+    libnetcdf-dev \
+    openjdk-11-jdk \
+    libncurses5-dev \
+    mpich \
+    libmpich-dev \
+    libmotif-common \
+    libmotif-dev
+
+  CUR_DIR=$(pwd)
+
+  tar -xzvf /opt/automake-1.15.1.tar.gz && \
+    cd automake-1.15.1 && \
+    ./configure --prefix=/opt/aclocal-1.15.1 && \
+    make && \
+    make install && \
+    cd $CUR_DIR && \
+    rm -rf /opt/automake-1.15.1.tar.gz
+
+  export PATH=/opt/aclocal-1.15.1/bin:$PATH
+
+  tar -xjvf /opt/rings-dx-v1.3.4.tar.bz2 && \
+    cd rings-dx/rings-code-v1.3.4 && \
+    ./configure --with-mpi && \
+    automake --add-missing && \
+    make && \
+    make install && \
+    rm -rf /opt/rings-dx-v1.3.4.tar.bz2
+
+%environment
+  export PATH=/opt/aclocal-1.15.1/bin:$PATH
+
+%help
+  This container is meant to run both RINGS
+  software and OpenDX.
